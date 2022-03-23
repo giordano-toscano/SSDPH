@@ -151,8 +151,8 @@ public class SSDPplus {
         //*******************************************
         //Data set                    ***************
         //*******************************************
-        String caminho = "C:\\Users\\tarci\\OneDrive\\Documentos\\NetBeansProjects\\SSDPplusGit\\pastas\\bases\\"; 
-        String nomeBase = "alon-clean50-pn-width-2.CSV";
+        String caminho = "D:\\giord\\Giordano\\CC - UNICAP\\PIBIC\\PROJETO SSDP+\\Definitive SSDPH Folder\\ssdp_plus\\data sets\\Text mining\\"; 
+        String nomeBase = "matrixBinaria-Global-100-p.CSV";
         String caminhoBase = caminho + nomeBase;
        
         //separator database (CSV files)
