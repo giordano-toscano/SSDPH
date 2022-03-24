@@ -46,7 +46,7 @@ public class D {
     public static final int TIPO_EXCEL = 2;
     
     public static String[][] dataStringMatrix;
-    public static final double samplingRate = 1;
+    public static double samplingRate = 0.4;
         
     public static String tipoDiscretizacao;
     
@@ -59,6 +59,7 @@ public class D {
      * @param tipoArquivo - tipodo arquivo: CSV, ARFF, EXCEL, etc.
      * @throws FileNotFoundException 
      */    
+    /*
     public static void CarregarArquivo_old(String caminho, int tipoArquivo) throws FileNotFoundException{
           
         //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataSetStringMatrix 
@@ -76,7 +77,7 @@ public class D {
         }            
         
         //Carrega a partir do nosso formato em D
-        D.dadosStrToD(dataStringMatrix); 
+        D.dataStringMatrixToD(dataStringMatrix); 
         
         //Filtro determina os itens que serão considerados pelos algoritmos
         //Por padrão todos são aceitos
@@ -86,14 +87,15 @@ public class D {
             D.itensUtilizados[l] = l;
         }           
     }
+    */
     
     
     /** Recebe caminho para base de dados e tipo de formato e carrega base de dados na classe D 
      * @param caminho - caminho do arquivo completo
-     * @param tipoArquivo - tipodo arquivo: CSV, ARFF, EXCEL, etc.
+     * @param tipoArquivo - tipo do arquivo: CSV, ARFF, EXCEL, etc.
      * @throws FileNotFoundException 
      */    
-    public static void CarregarArquivo(String caminho, int tipoArquivo) throws FileNotFoundException{
+    public static void loadFile(String caminho, int tipoArquivo) throws FileNotFoundException{
           
         //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataSetStringMatrix 
         D.dataStringMatrix = null;
@@ -114,12 +116,12 @@ public class D {
     /** Gera D, Dp, Dn e itnes a partir da base salva no formato de matriz de String: dataSetStringMatrix: String[][]  
      * @param rotulo: String valor de referência para dividir Dp e Dn 
      */    
-    public static void GerarDpDn(String rotulo) throws FileNotFoundException{
+    public static void generateDpDn(String rotulo) throws FileNotFoundException{
         //Atribuindo alvo
         D.valorAlvo = rotulo;
         
         //Carrega a partir do nosso formato em D
-        D.dadosStrToD(dataStringMatrix); 
+        D.dataStringMatrixToD(dataStringMatrix); 
         
         //Filtro determina os itens que serão considerados pelos algoritmos
         //Por padrão todos são aceitos
@@ -137,7 +139,7 @@ public class D {
     
 
     
-    /**Recebe caminho para arquivo .CSV ou .csv e retorna matriz de strings onde dadosStr:String[numeroExemplo][numeroAtributos].
+    /**Recebe caminho para arquivo .CSV ou .csv e retorna matriz de strings na qual dadosStr:String[numeroExemplo][numeroAtributos].
      * Além disso: 
      * (1) Salva nome da base em D.nomeBase
      * (2) Salva os nomes dos atributos e do rótulo em D.nomeVariaveis
@@ -206,10 +208,18 @@ public class D {
     private static ArrayList<String[]> randomSampling (ArrayList<String[]> dataRowsString){
         SecureRandom random = new SecureRandom();
         ArrayList<String[]> dataSampleString = new ArrayList<>();
-        int sampleSize = (int) (D.samplingRate * dataRowsString.size());
+        int totalNumberRows = dataRowsString.size();
+        int sampleSize = (int) (D.samplingRate * totalNumberRows);
+        String [] randomRow;
+        int i = 0;
         
-        for (int i = 0; i < sampleSize; i++ ) {
-            dataSampleString.add(dataRowsString.get(random.nextInt(sampleSize))); // cada vetor armazena uma linha de valores
+        while(i < sampleSize) {
+            randomRow = dataRowsString.get(random.nextInt(totalNumberRows));
+            if(dataSampleString.contains(randomRow)){
+                continue;
+            }
+            dataSampleString.add(randomRow);
+            i++;
         }
         return dataSampleString;
     }
@@ -224,7 +234,7 @@ public class D {
      * Tais valores são mapeados nos inteiros itemAtributo[i] e itemValor[i], formato final da base de dadosutilizadas pelos algoritmos.  
      * @param dadosStr 
      */
-    private static void dadosStrToD(String[][] dadosStr){
+    private static void dataStringMatrixToD(String[][] dadosStr){
                 
         //Capturando os valores distintos de cada atributo
         ArrayList<HashSet<String>> valoresDistintosAtributos = new ArrayList<>(); //Amazena os valores distintos de cada atributo em um linha
@@ -350,7 +360,7 @@ public class D {
     }
     
     /**
-     * Imprime dicionário no console. É um alternativa ao método recordDicionario que salva em arquivo.
+     * Imprime dicionário no console. É uma alternativa ao método recordDicionario que salva em arquivo.
      * @deprecated 
      * OBS: esse método pode estar defasado!
      */
@@ -367,7 +377,7 @@ public class D {
     }
 
     /**
-     * Filtra atributos, valores e intens (atributo,valor) passados como parâmetros.
+     * Filtra atributos, valores e itens (atributo,valor) passados como parâmetros.
      * Os itens filtrados não serão consideraodos pelos algoritmos nas buscas.
      * @param atributos
      * @param valores
@@ -458,7 +468,7 @@ public class D {
     }
     
     /**
-     * Compara duas strings com variações de formatos provavelemnte devido a fomatação do testo (ISO, ANSI, etc.) Não sei se estácobrindo todoas as possibilidades.
+     * Compara duas strings com variações de formatos provavelmente devido a fomatação do testo (ISO, ANSI, etc.) Não sei se estácobrindo todoas as possibilidades.
      * Deve ter uma forma mais elegante de lidar com esse problema!!!
      * @param palavra
      * @param palavraVariacoes
@@ -479,7 +489,7 @@ public class D {
         
 //        String caminho = Const.CAMINHO_BASES + "amazon_cells_labelled.csv";
 //        
-//        D.CarregarArquivo(caminho, D.TIPO_CSV);
+//        D.loadFile(caminho, D.TIPO_CSV);
 //              
 //        System.out.println();
         
@@ -491,8 +501,8 @@ public class D {
         for(int i = 0; i < arquivos.length; i++){  
         //for(int i = 0; i < 2; i++){  
                 String caminhoBase = arquivos[i].getAbsolutePath();
-                D.CarregarArquivo(caminhoBase, D.TIPO_CSV);
-                D.GerarDpDn("p");
+                D.loadFile(caminhoBase, D.TIPO_CSV);
+                D.generateDpDn("p");
                 System.out.println("[" + i + "]");
                 //D.imprimirDicionario();
                 D.recordDicionario(Const.CAMINHO_DICIONARIOS);                

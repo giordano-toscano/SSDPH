@@ -192,8 +192,8 @@ public class SSDPplus {
         double maxTimeSecond =  -1;      
         
         System.out.println("Loading data set...");
-        D.CarregarArquivo(caminhoBase, D.TIPO_CSV); //Loading data set        
-        D.GerarDpDn(target);
+        D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set        
+        D.generateDpDn(target);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
         //D.valorAlvo = "I-III";
         //D.valorAlvo = "IV-VII";

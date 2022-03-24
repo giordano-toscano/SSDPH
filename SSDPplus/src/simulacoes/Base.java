@@ -39,8 +39,8 @@ public class Base {
     }
 
     public void carregarBaseEmD() throws FileNotFoundException{
-        D.CarregarArquivo(this.caminhoBase, this.formatacaoBase);
-        D.GerarDpDn("p");
+        D.loadFile(this.caminhoBase, this.formatacaoBase);
+        D.generateDpDn("p");
     }
     
     public String getNome() {
