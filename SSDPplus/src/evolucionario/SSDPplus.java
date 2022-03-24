@@ -195,8 +195,8 @@ public class SSDPplus {
         D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set        
         D.generateDpDn(target);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
-        //D.valorAlvo = "I-III";
-        //D.valorAlvo = "IV-VII";
+        //D.targetValue = "I-III";
+        //D.targetValue = "IV-VII";
         
         
         

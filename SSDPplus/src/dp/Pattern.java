@@ -511,8 +511,8 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         }
         str.append(D.itemAtributoStr[ itensArray[j] ] + "=" + D.itemValorStr[ itensArray[j] ]);
         //str.append(itensArray[j]);
-        str.append("}->" + D.valorAlvo);
-        str.append(" (" + D.valorAlvo + "=" + this.TP + ", others=" + this.FP + ")");
+        str.append("}->" + D.targetValue);
+        str.append(" (" + D.targetValue + "=" + this.TP + ", others=" + this.FP + ")");
         
         //Imprimindo métricas passadas como parâmetro.
         DecimalFormat df2 = new DecimalFormat("#.##");
