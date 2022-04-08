@@ -64,7 +64,7 @@ public class SSDPplus {
         int numeroGeracoesSemMelhoraPk = 0;
         int indiceGeracoes = 1;
         
-        //Laço do AG
+        //Genetic Algorithmn loop
         Pattern[] Pnovo = null;
         Pattern[] PAsterisco = null;
         
@@ -137,6 +137,8 @@ public class SSDPplus {
             
             numeroGeracoesSemMelhoraPk = 0;
         }
+        
+        
         
                
         
@@ -225,9 +227,9 @@ public class SSDPplus {
         D.filtrar(filtrarAtributos, filtrarValores, filtrarAtributosValores);
                
         Pattern.numeroIndividuosGerados = 0; //Initializing count of generated individuals
-        System.out.println("### Data set:" + D.nomeBase + "(|I|=" + D.numeroItens + 
-                "; |A|=" + D.numeroAtributos +
-                "; |D|=" + D.numeroExemplos +
+        System.out.println("### Data set:\n" + D.baseName + "(|I|=" + D.numeroItens + 
+                "; |A|=" + D.attributesNumber +
+                "; |D|=" + D.examplesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
                  ")"); //database name
@@ -245,8 +247,8 @@ public class SSDPplus {
         Avaliador.imprimirRegras(p, k); 
         
         //Informations about top-k DPs:  
-        System.out.println("### Data set:" + D.nomeBase + "(|I|=" + D.numeroItens + 
-                "; |A|=" + D.numeroAtributos +
+        System.out.println("\n### Data set:" + D.baseName + "(|I|=" + D.numeroItens + 
+                "; |A|=" + D.attributesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
                  ")"); //database name

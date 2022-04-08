@@ -18,17 +18,17 @@ import java.util.Scanner;
  */
 public class D {
    
-    public static String nomeBase;
-    public static String caminho;
-    public static int numeroExemplos;
+    public static String baseName;
+    public static String path;
+    public static int examplesNumber;
     public static int numeroExemplosPositivo;
     public static int numeroExemplosNegativo;
-    public static int numeroAtributos;
+    public static int attributesNumber;
     public static int numeroItens;
     
     public static String SEPARADOR = ","; 
     
-    public static String[] nomeVariaveis;   
+    public static String[] attributeNames;   
     
     public static int[] itemAtributo;
     public static int[] itemValor;
@@ -45,13 +45,13 @@ public class D {
     public static final int TIPO_ARFF = 1;
     public static final int TIPO_EXCEL = 2;
     
-    public static String[][] dataStringMatrix;
-    public static double samplingRate = 0.4;
+    public static String[][] examplesMatrix;
+    public static Partition[] partitions;
         
     public static String tipoDiscretizacao;
     
     public static String targetValue = "";
-    public static String[] valoresAlvo;
+    public static String[] targetValues;
     
     
     /** Recebe caminho para base de dados e tipo de formato e carrega base de dados na classe D 
@@ -60,13 +60,13 @@ public class D {
      * @throws FileNotFoundException 
      */    
     /*
-    public static void CarregarArquivo_old(String caminho, int tipoArquivo) throws FileNotFoundException{
+    public static void CarregarArquivo_old(String path, int tipoArquivo) throws FileNotFoundException{
           
-        //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataSetStringMatrix 
-        D.dataStringMatrix = null;
+        //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataRowsMatrix 
+        D.dataRowsMatrix = null;
         switch(tipoArquivo){
             case D.TIPO_CSV:
-                dataStringMatrix = D.csvToDataStringMatrix(caminho);
+                dataRowsMatrix = D.csvToDataStringMatrix(path);
                 break;
             case D.TIPO_ARFF:
                 //não implementado
@@ -77,7 +77,7 @@ public class D {
         }            
         
         //Carrega a partir do nosso formato em D
-        D.dataStringMatrixToD(dataStringMatrix); 
+        D.dataStringMatrixToD(dataRowsMatrix); 
         
         //Filtro determina os itens que serão considerados pelos algoritmos
         //Por padrão todos são aceitos
@@ -91,18 +91,18 @@ public class D {
     
     
     /** 
-     * Recebe caminho para base de dados e tipo de formato e carrega base de dados na classe D 
-     * @param caminho - caminho do arquivo completo
+     * Recebe path para base de dados e tipo de formato e carrega base de dados na classe D 
+     * @param caminho - path do arquivo completo
      * @param tipoArquivo - tipo do arquivo: CSV, ARFF, EXCEL, etc.
      * @throws FileNotFoundException 
      */    
     public static void loadFile(String caminho, int tipoArquivo) throws FileNotFoundException{
           
-        //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataSetStringMatrix 
-        D.dataStringMatrix = null;
+        //Passa dados do formato específico para um formato padrão definido por nós: String[][] dataRowsMatrix 
+        D.examplesMatrix = null;
         switch(tipoArquivo){
             case D.TIPO_CSV:
-                D.dataStringMatrix = D.csvToDataStringMatrix(caminho);
+                D.examplesMatrix = D.csvToDataStringMatrix(caminho);
                 break;
             case D.TIPO_ARFF:
                 //não implementado
@@ -126,76 +126,79 @@ public class D {
      * (3) Salva número de exemplos e de atributos
      * (4) Salva caminho da base em D.caminho
      * @param caminho
-     * @return String[][] - String[numeroExemplo][numeroAtributos]
+     * @return String[][] - String[numeroExemplo][attributesNumber]
      * @throws FileNotFoundException 
      */
     private static String[][] csvToDataStringMatrix(String caminho) throws FileNotFoundException{
-        D.caminho = caminho;
-        Scanner scanner = new Scanner(new FileReader(D.caminho)).useDelimiter("\\n"); // Reading file in standard format
-        ArrayList<String[]> dataRowsString = new ArrayList<>();                       // ArrayList to store the rows of the dataset        
+        D.path = caminho;
+        Scanner scanner = new Scanner(new FileReader(D.path)).useDelimiter("\\n");          // Reading file in standard format
+        ArrayList<String[]> dataRows = new ArrayList<>();                                   // ArrayList to store the rows of the dataset        
               
         
-        String[] palavras = D.caminho.split("\\\\");
-        if(palavras.length == 1){
-            palavras = D.caminho.split("/");                                        // Caso separador de pastas seja / e  não \\
+        String[] pathComponents = D.path.split("\\\\");
+        if(pathComponents.length == 1){
+            pathComponents = D.path.split("/");                                          // Caso separador de pastas seja / e  não \\
         }
         
-        D.nomeBase = palavras[palavras.length-1].replace(".CSV", "");       // File name is the last word (case .CSV)
-        D.nomeBase = D.nomeBase.replace(".csv", "");                        //(case .csv)
+        // Defining the base name
+        D.baseName = pathComponents[pathComponents.length-1].replace(".CSV", "");           // Base name is the last word (case .CSV)
+        D.baseName = D.baseName.replace(".csv", "");                                        //(case .csv)
                 
-        D.nomeVariaveis = scanner.next().split(D.SEPARADOR);                // 1º linha: nomes das variáveis (incluindo o rótulo)
-       
-        //Lipando nomes dos atributos
-        for(int i = 0; i < D.nomeVariaveis.length; i++){
-            D.nomeVariaveis[i] = D.nomeVariaveis[i].replaceAll("[\"\r\']", "");   // Removes the double quotes
+        // Initializing the names and the number of attributes
+        D.attributeNames = scanner.next().split(D.SEPARADOR);                               // 1º line: variable names (including the label)
+        D.attributesNumber = D.attributeNames.length - 1;                                   // number of variables (excluding the label)
+        for(int i = 0; i < D.attributeNames.length; i++){
+            D.attributeNames[i] = D.attributeNames[i].replaceAll("[\"\r\']", "");           // Clearing attribute names (removing the double quotes)
         }
-      
-        D.numeroAtributos = D.nomeVariaveis.length-1;                           // número de variáveis (excluindo o rótulo)
+        
         while (scanner.hasNext()) {
-            dataRowsString.add(scanner.next().split(D.SEPARADOR));
+            dataRows.add(scanner.next().split(D.SEPARADOR));
         }
         
-        if(D.samplingRate != 1){
-             dataRowsString = randomSampling(dataRowsString);
+        // Sampling Decision
+        if(true){
+             //D.partitions = new Partition[2];
+             //partitions[0].setExamplesMatrix(examplesMatrix);
+             dataRows = randomSampling(dataRows,0.4);
         }
         
-        
-        D.numeroExemplos = dataRowsString.size();
+        D.examplesNumber = dataRows.size();
         
         HashSet<String> targetValuesHashSet = new HashSet<String>();
-        String[][] dataSetStringMatrix = new String[D.numeroExemplos][D.numeroAtributos+1];
-        for(int i = 0; i < dataRowsString.size(); i++){
-            String[] row = dataRowsString.get(i);//recebe linha de dados
+        String[][] dataRowsMatrix = new String[D.examplesNumber][D.attributesNumber+1];
+        for(int i = 0; i < dataRows.size(); i++){
+            String[] row = dataRows.get(i);                                  // gets a data line
             for(int j = 0; j < row.length; j++){
-                dataSetStringMatrix[i][j] = row[j].replaceAll("[\"\r\']", "");    // Removes the double quotes
+                dataRowsMatrix[i][j] = row[j].replaceAll("[\"\r\']", "");    // Removing the double quotes
             }
-            //valoresAlvoHasSet.add(row[D.numeroAtributos]);
-            targetValuesHashSet.add(dataSetStringMatrix[i][D.numeroAtributos]);           
+            //valoresAlvoHasSet.add(row[D.attributesNumber]);
+            targetValuesHashSet.add(dataRowsMatrix[i][D.attributesNumber]);           
         }       
         
         //Coletanto valores distintos do atributo alvo
-        D.valoresAlvo = new String[targetValuesHashSet.size()];
+        D.targetValues = new String[targetValuesHashSet.size()];
         Iterator iterator = targetValuesHashSet.iterator();
         int indice = 0;
         while(iterator.hasNext()){
-            D.valoresAlvo[indice++] = (String) iterator.next();
+            D.targetValues[indice++] = (String) iterator.next();
         }
-        Arrays.sort(D.valoresAlvo);
+        Arrays.sort(D.targetValues);
         
-        return dataSetStringMatrix;
+        return dataRowsMatrix;
     }
     
     /** 
-     * Recebe um ArrayList contendo todas as linhas da base e retorna uma amostra 
+     * Recebe um ArrayList contendo todas as linhas da base e retorna uma amostra de exemplos aleatórios.
      * Além disso: 
      * @param dataRowsString
      * @return dataSampleString :ArrayList<String[]>
      */
-    private static ArrayList<String[]> randomSampling (ArrayList<String[]> dataRowsString){
+    private static ArrayList<String[]> randomSampling (ArrayList<String[]> dataRowsString, double samplingRate ){
         SecureRandom random = new SecureRandom();
+        random.setSeed(Const.SEEDS[0]);
         ArrayList<String[]> dataSampleString = new ArrayList<>();
         int totalNumberRows = dataRowsString.size();
-        int sampleSize = (int) (D.samplingRate * totalNumberRows);
+        int sampleSize = (int) (samplingRate * totalNumberRows);
         String [] randomRow;
         int i = 0;
         
@@ -210,8 +213,29 @@ public class D {
         return dataSampleString;
     }
     
+    private static ArrayList<String[]> stratifiedSampling(ArrayList<String[]> dataRowsString, double positiveExamplesRate){
+        //Capturar número de exemplos positivos (y="p") e negativos (y="n")
+        int indiceRotulo = D.attributesNumber;
+        D.numeroExemplosPositivo = 0;
+        D.numeroExemplosNegativo = 0;
+        //Contanto número de exemplos positivos e negativos
+        for(int i = 0; i < D.examplesNumber; i++){
+            String y = D.examplesMatrix[i][indiceRotulo];
+            //if(y.equals(D.targetValue) || y.equals("\"" + D.targetValue + "\"\r") || y.equals("\'" + D.targetValue + "\'\r") || y.equals(D.targetValue + "\r")){
+            if(y.equals(D.targetValue)){
+                D.numeroExemplosPositivo++;
+            }else{
+                D.numeroExemplosNegativo++;
+            }
+        }
+        
+        
+        
+        return null;
+    }
+    
     /** 
-     * Gera D, Dp, Dn e itens a partir da base salva no formato de matriz de String: dataSetStringMatrix: String[][]  
+     * Gera D, Dp, Dn e itens a partir da base salva no formato de matriz de String: dataRowsMatrix: String[][]  
      * @param label: String valor de referência para dividir Dp e Dn 
      */    
     public static void generateDpDn(String label) throws FileNotFoundException{
@@ -246,10 +270,10 @@ public class D {
         //Capturando os valores distintos de cada atributo
         ArrayList<HashSet<String>> valoresDistintosAtributos = new ArrayList<>(); //Amazena os valores distintos de cada atributo em um linha
         D.numeroItens = 0;
-        for(int i = 0; i < D.numeroAtributos; i++){
+        for(int i = 0; i < D.attributesNumber; i++){
             HashSet<String> valoresDistintosAtributo = new HashSet<>(); //Armazena valores distintos de apenas um atributo. Criar HashSet para armezenar valores distintos de um atributo. Não admite valores repetidos!
-            for(int j = 0; j < D.numeroExemplos; j++){
-                valoresDistintosAtributo.add(D.dataStringMatrix[j][i]); //Coleção não admite valores repetidos a baixo custo computacional.
+            for(int j = 0; j < D.examplesNumber; j++){
+                valoresDistintosAtributo.add(D.examplesMatrix[j][i]); //Coleção não admite valores repetidos a baixo custo computacional.
             }
             D.numeroItens += valoresDistintosAtributo.size();
             
@@ -263,7 +287,7 @@ public class D {
         D.itemValor = new int[D.numeroItens];
             
         //Carrega arrays com universos de itens com valores reais e respectivos inteiros mapeados
-        int[][] dadosInt = new int[D.numeroExemplos][D.numeroAtributos]; //dados no formato inteiro: mais rápido compararinteiros que strings
+        int[][] dadosInt = new int[D.examplesNumber][D.attributesNumber]; //dados no formato inteiro: mais rápido comparar inteiros que strings
         int indiceItem = 0; //Indice vai de zero ao número de itens total
         for(int indiceAtributo = 0; indiceAtributo < valoresDistintosAtributos.size(); indiceAtributo++){
             Iterator valoresDistintosAtributoIterator = valoresDistintosAtributos.get(indiceAtributo).iterator(); //Capturando valores distintos do atributo de indice i
@@ -273,15 +297,15 @@ public class D {
             //Atribui inteiro para atributo e a cada valor do atributo.  
             //Realizar mapeamento na matriz de dados no formato inteiro
             while(valoresDistintosAtributoIterator.hasNext()){
-                D.itemAtributoStr[indiceItem] = D.nomeVariaveis[indiceAtributo]; //
+                D.itemAtributoStr[indiceItem] = D.attributeNames[indiceAtributo]; //
                 D.itemValorStr[indiceItem] = (String)valoresDistintosAtributoIterator.next();
 
                 D.itemAtributo[indiceItem] = indiceAtributo;
                 D.itemValor[indiceItem] = indiceValor;               
                 
                 //Preenche respectivo item (atributo, Valor) na matrix dadosInt com inteiro que mapeia valor categórico da base
-                for(int m = 0; m < D.numeroExemplos; m++){
-                    if(D.dataStringMatrix[m][indiceAtributo].equals(D.itemValorStr[indiceItem])){
+                for(int m = 0; m < D.examplesNumber; m++){
+                    if(D.examplesMatrix[m][indiceAtributo].equals(D.itemValorStr[indiceItem])){
                         dadosInt[m][indiceAtributo] = D.itemValor[indiceItem];
                     }
                 }
@@ -300,13 +324,13 @@ public class D {
      * @param dadosInt 
      */
     private static void geraDpDn(int[][] dadosInt){
-        //Capturar número de exemplo positivos (y="p") e negativos (y="n")
-        int indiceRotulo = D.numeroAtributos;
+        //Capturar número de exemplos positivos (y="p") e negativos (y="n")
+        int indiceRotulo = D.attributesNumber;
         D.numeroExemplosPositivo = 0;
         D.numeroExemplosNegativo = 0;
         //Contanto número de exemplos positivos e negativos
-        for(int i = 0; i < D.numeroExemplos; i++){
-            String y = D.dataStringMatrix[i][indiceRotulo];
+        for(int i = 0; i < D.examplesNumber; i++){
+            String y = D.examplesMatrix[i][indiceRotulo];
             //if(y.equals(D.targetValue) || y.equals("\"" + D.targetValue + "\"\r") || y.equals("\'" + D.targetValue + "\'\r") || y.equals(D.targetValue + "\r")){
             if(y.equals(D.targetValue)){
                 D.numeroExemplosPositivo++;
@@ -316,21 +340,21 @@ public class D {
         }
         
         //inicializando Dp e Dn
-        D.Dp = new int[D.numeroExemplosPositivo][D.numeroAtributos];
-        D.Dn = new int[D.numeroExemplosNegativo][D.numeroAtributos];
+        D.Dp = new int[D.numeroExemplosPositivo][D.attributesNumber];
+        D.Dn = new int[D.numeroExemplosNegativo][D.attributesNumber];
         
         int indiceDp = 0;
         int indiceDn = 0;
-        for(int i = 0; i < D.numeroExemplos; i++){
-            String yValue = D.dataStringMatrix[i][indiceRotulo];
+        for(int i = 0; i < D.examplesNumber; i++){
+            String yValue = D.examplesMatrix[i][indiceRotulo];
             //if(yValue.equals(D.targetValue) || yValue.equals("\"" + D.targetValue + "\"\r") || yValue.equals("\'" + D.targetValue + "\'\r") || yValue.equals(D.targetValue + "\r")){
             if(yValue.equals(D.targetValue)){
-                for(int j = 0; j < D.numeroAtributos; j++){
+                for(int j = 0; j < D.attributesNumber; j++){
                     Dp[indiceDp][j] = dadosInt[i][j];
                 }
                 indiceDp++;
             }else{
-                for(int j = 0; j < D.numeroAtributos; j++){
+                for(int j = 0; j < D.attributesNumber; j++){
                     Dn[indiceDn][j] = dadosInt[i][j];
                 }
                 indiceDn++;            
@@ -345,7 +369,7 @@ public class D {
      * @throws IOException 
      */
     public static void recordDicionario(String caminhoPastaSalvar) throws IOException{
-        String nomeArquivo = caminhoPastaSalvar + "\\" + D.nomeBase + "Dic.txt";
+        String nomeArquivo = caminhoPastaSalvar + "\\" + D.baseName + "Dic.txt";
         String separadorDicionario = ",";
         File file = new File(nomeArquivo);
         // creates the file
@@ -354,8 +378,8 @@ public class D {
         FileWriter writer = new FileWriter(file); 
         // Writes the content to the file
         
-        writer.write("@Nome: " + D.nomeBase + "\r\n"); 
-        writer.write("@Info: Atributos=" + D.numeroAtributos +  separadorDicionario + "|D|=" +  D.numeroExemplos + separadorDicionario + "|Dp|=" + D.numeroExemplosPositivo + separadorDicionario + "|Dn|=" + D.numeroExemplosNegativo
+        writer.write("@Nome: " + D.baseName + "\r\n"); 
+        writer.write("@Info: Atributos=" + D.attributesNumber +  separadorDicionario + "|D|=" +  D.examplesNumber + separadorDicionario + "|Dp|=" + D.numeroExemplosPositivo + separadorDicionario + "|Dn|=" + D.numeroExemplosNegativo
             + separadorDicionario + "|I|=" + D.numeroItensUtilizados + "\r\n"); 
         //writer.write(); 
         writer.write("@Dicionario:Item,Atributo,Valor" + "\r\n"); 
@@ -372,8 +396,8 @@ public class D {
      * OBS: esse método pode estar defasado!
      */
     public static void imprimirDicionario(){        
-        System.out.println("@Nome:" + D.nomeBase);
-        System.out.println("@Info:Atributos=" + D.numeroAtributos + " ; |D|=" +  D.numeroExemplos + " ; |Dp|=" + D.numeroExemplosPositivo + " ; |Dn|=" + D.numeroExemplosNegativo
+        System.out.println("@Nome:" + D.baseName);
+        System.out.println("@Info:Atributos=" + D.attributesNumber + " ; |D|=" +  D.examplesNumber + " ; |Dp|=" + D.numeroExemplosPositivo + " ; |Dn|=" + D.numeroExemplosNegativo
             + "; |I|=" + D.numeroItensUtilizados);
         //System.out.println("@Dicionario: Item;atributoOriginal;valorOriginal;atributoInt;valorInt");
         System.out.println("@Dicionario: Item;Atributo;Valor");
@@ -494,9 +518,9 @@ public class D {
     
     public static void main(String args[]) throws FileNotFoundException, IOException{
         
-//        String caminho = Const.CAMINHO_BASES + "amazon_cells_labelled.csv";
+//        String path = Const.CAMINHO_BASES + "amazon_cells_labelled.csv";
 //        
-//        D.loadFile(caminho, D.TIPO_CSV);
+//        D.loadFile(path, D.TIPO_CSV);
 //              
 //        System.out.println();
         

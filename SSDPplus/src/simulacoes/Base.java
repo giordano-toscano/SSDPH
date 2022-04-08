@@ -29,9 +29,9 @@ public class Base {
         this.caminhoBase = caminhoBase;
         this.formatacaoBase = formatacaoBase;
         this.carregarBaseEmD();
-        this.nome = D.nomeBase;
-        this.numeroAtributos = D.numeroAtributos;
-        this.numeroExemplos = D.numeroExemplos;
+        this.nome = D.baseName;
+        this.numeroAtributos = D.attributesNumber;
+        this.numeroExemplos = D.examplesNumber;
         this.numeroExemplosPositivo = D.numeroExemplosPositivo;
         this.numeroExemplosNegativo = D.numeroExemplosNegativo;
         this.numeroItens = D.numeroItensUtilizados;

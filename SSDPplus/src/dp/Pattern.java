@@ -47,11 +47,11 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         this.itens = itens;
         this.tipoAvaliacao = tipoAvaliacao;            
         if(Pattern.ITENS_OPERATOR == Const.PATTERN_AND){
-            this.vrP = Avaliador.vetorResultantePositivoAND(itens); //Saber se somina ou é dominado. Isso ajuda!
-            this.vrN = Avaliador.vetorResultanteNegativoAND(itens); //Saber se somina ou é dominado. Isso ajuda!
+            this.vrP = Avaliador.vetorResultantePositivoAND(itens); //Saber se domina ou é dominado. Isso ajuda!
+            this.vrN = Avaliador.vetorResultanteNegativoAND(itens); //Saber se domina ou é dominado. Isso ajuda!
         }else if(Pattern.ITENS_OPERATOR == Const.PATTERN_OR){
-            this.vrP = Avaliador.vetorResultantePositivoOR(itens); //Saber se somina ou é dominado. Isso ajuda!
-            this.vrN = Avaliador.vetorResultanteNegativoOR(itens); //Saber se somina ou é dominado. Isso ajuda!        
+            this.vrP = Avaliador.vetorResultantePositivoOR(itens); //Saber se domina ou é dominado. Isso ajuda!
+            this.vrN = Avaliador.vetorResultanteNegativoOR(itens); //Saber se domina ou é dominado. Isso ajuda!        
         }   
         this.TP = Avaliador.TP(this.vrP);
         this.FP = Avaliador.FP(this.vrN);
