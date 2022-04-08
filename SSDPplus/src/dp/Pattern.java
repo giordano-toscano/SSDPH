@@ -87,6 +87,16 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         return vrN;
     }
 
+    public void setVrP(boolean[] vrP) {
+        this.vrP = vrP;
+    }
+
+    public void setVrN(boolean[] vrN) {
+        this.vrN = vrN;
+    }
+    
+    
+
     public int getTP() {
         return TP;
     }
@@ -95,9 +105,24 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         return FP;
     }
 
+    public void setTP(int TP) {
+        this.TP = TP;
+    }
+
+    public void setFP(int FP) {
+        this.FP = FP;
+    }
+    
+    
+
     public double getQualidade() {
         return qualidade;
     }
+
+    public void setQualidade(double qualidade) {
+        this.qualidade = qualidade;
+    }
+    
 
 //    public ArrayList<Pattern> getSinonimos() {
 //        return sinonimos;

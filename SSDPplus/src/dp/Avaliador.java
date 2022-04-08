@@ -475,8 +475,23 @@ public class Avaliador {
         return false; 
     }
     
-    public static void evaluateWholeBase(Pattern[] Pk){
-        
+    public static void evaluateWholeBase(Pattern[] Pk, String tipoAvaliacao){
+        HashSet<Integer> itens;
+        int TP = 0, FP = 0;
+        Pattern Pi;
+        for(int i = 0; i < Pk.length; i++){
+            Pi = Pk[i];
+            itens = Pi.getItens();
+            Pi.setVrP(Avaliador.vetorResultantePositivoAND(itens));
+            Pi.setVrN(Avaliador.vetorResultanteNegativoAND(itens));
+            Pi.setTP(Avaliador.TP(Pi.getVrP())); 
+            Pi.setFP(Avaliador.FP(Pi.getVrN()));
+            Pi.setQualidade(Avaliador.avaliar(Pi.getTP(), Pi.getFP(), tipoAvaliacao));
+            if (Pi.getSimilares() != null){
+                evaluateWholeBase(Pi.getSimilares(), tipoAvaliacao );
+            }
+            
+        }
         
     }
     
