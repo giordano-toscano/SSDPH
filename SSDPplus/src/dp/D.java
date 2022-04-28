@@ -21,8 +21,8 @@ public class D {
     public static String baseName;
     public static String path;
     public static int examplesNumber;
-    public static int numeroExemplosPositivo;
-    public static int numeroExemplosNegativo;
+    public static int numeroExemplosPositivo;    //
+    public static int numeroExemplosNegativo;    // 
     public static int attributesNumber;
     public static int numeroItens;
 
@@ -35,8 +35,8 @@ public class D {
     public static String[] itemAtributoStr;
     public static String[] itemValorStr;
 
-    public static int[][] Dp;
-    public static int[][] Dn;
+    public static int[][] Dp;     //
+    public static int[][] Dn;     //
 
     public static int[] itensUtilizados;
     public static int numeroItensUtilizados;
@@ -68,7 +68,7 @@ public class D {
         D.dataRowsMatrix = null;
         switch(tipoArquivo){
             case D.TIPO_CSV:
-                dataRowsMatrix = D.csvToDataStringMatrix(path);
+                dataRowsMatrix = D.csvToExamplesMatrix(path);
                 break;
             case D.TIPO_ARFF:
                 //não implementado
@@ -103,7 +103,7 @@ public class D {
         D.examplesMatrix = null;
         switch (tipoArquivo) {
             case D.TIPO_CSV:
-                D.examplesMatrix = D.csvToDataStringMatrix(caminho);
+                D.examplesMatrix = D.csvToExamplesMatrix(caminho);
                 break;
             case D.TIPO_ARFF:
                 //não implementado
@@ -120,13 +120,17 @@ public class D {
     }
 
     /**
-     * Recebe caminho para arquivo .CSV ou .csv e retorna matriz de strings na qual dadosStr:String[numeroExemplo][numeroAtributos]. Além disso: (1) Salva nome da base em D.nomeBase (2) Salva os nomes dos atributos e do rótulo em D.nomeVariaveis (3) Salva número de exemplos e de atributos (4) Salva caminho da base em D.caminho
-     *
+     * Recebe caminho para arquivo .CSV ou .csv e retorna matriz de strings na qual dadosStr:String[numeroExemplo][numeroAtributos].
+     * Além disso: 
+     * (1) Salva nome da base em D.nomeBase 
+     * (2) Salva os nomes dos atributos e do rótulo em D.nomeVariaveis 
+     * (3) Salva número de exemplos e de atributos 
+     * (4) Salva caminho da base em D.caminho
      * @param caminho
      * @return String[][] - String[numeroExemplo][attributesNumber]
      * @throws FileNotFoundException
      */
-    private static String[][] csvToDataStringMatrix(String caminho) throws FileNotFoundException {
+    private static String[][] csvToExamplesMatrix(String caminho) throws FileNotFoundException {
         D.path = caminho;
         Scanner scanner = new Scanner(new FileReader(D.path)).useDelimiter("\\n");          // Reading file in standard format
         ArrayList<String[]> dataRows = new ArrayList<>();                                   // ArrayList to store the rows of the dataset        
@@ -152,7 +156,7 @@ public class D {
         }
         
         D.examplesNumber = dataRows.size();
-
+                
         HashSet<String> targetValuesHashSet = new HashSet<String>();
         String[][] dataRowsMatrix = new String[D.examplesNumber][D.attributesNumber + 1];
         for (int i = 0; i < dataRows.size(); i++) {
@@ -173,15 +177,15 @@ public class D {
         }
         Arrays.sort(D.targetValues);
         
-        if(D.numberOfPartitions != 1){
+        /*if(D.numberOfPartitions != 1){
             
             
             
         }
-        /*D.partitions = new String[D.numberOfPartitions][][];
-        D.partitions[0] = dataRowsMatrix;*/
+        D.partitions = new String[D.numberOfPartitions][][];
+        D.partitions[0] = dataRowsMatrix;
         dataRowsMatrix = randomSampling(dataRowsMatrix,0.4);
-        D.examplesNumber = dataRowsMatrix.length;
+        D.examplesNumber = dataRowsMatrix.length;*/
         
         return dataRowsMatrix;
     }
@@ -252,11 +256,9 @@ public class D {
                 D.numeroExemplosNegativo++;
             }
         }
-        
-        
-        
         return null;
     }*/
+    
     /**
      * Gera D, Dp, Dn e itens a partir da base salva no formato de matriz de String: dataRowsMatrix: String[][]
      *
@@ -279,7 +281,13 @@ public class D {
     }
 
     /**
-     * Recebe dados no formato de String e preenche classe D com o universo de itens e exemplos positivos e negativos (1) Gera universos de itens (atributo, valores) carregando em itemAtributoStr(String[]) e itemValorStr(String[]) (2) Mapeia universo de itens no formato original para inteiros: itemAtributo(int[]) e itemValor(int[]) (3) Mapeia base de dados para o formato de inteiros OBS: a posição do array é o Item no problema de Grupos Discriminativos. Posição i, por exemplo é um item que representa o atributo itemAtributoStr[i] com valor itemValorStr[i]. Tais valores são mapeados nos inteiros itemAtributo[i] e itemValor[i], formato final da base de dados utilizadas pelos algoritmos.
+     * Recebe dados no formato de String e preenche classe D com o universo de itens e exemplos positivos e negativos 
+     * (1) Gera universos de itens (atributo, valores) carregando em itemAtributoStr(String[]) e itemValorStr(String[]) 
+     * (2) Mapeia universo de itens no formato original para inteiros: itemAtributo(int[]) e itemValor(int[]) 
+     * (3) Mapeia base de dados para o formato de inteiros 
+     * OBS: a posição do array é o Item no problema de Grupos Discriminativos. 
+     * Posição i, por exemplo é um item que representa o atributo itemAtributoStr[i] com valor itemValorStr[i]. 
+     * Tais valores são mapeados nos inteiros itemAtributo[i] e itemValor[i], formato final da base de dados utilizadas pelos algoritmos.
      *
      * @param dataStringMatrix
      */

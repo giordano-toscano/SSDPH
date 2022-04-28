@@ -21,7 +21,7 @@ import simulacoes.DPinfo;
  * @author TARCISIO
  */
 public class SSDPplus {
-    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos) throws FileNotFoundException{
+    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos){
         long t0 = System.currentTimeMillis(); //Initial time
         
         Pattern[] Pk = new Pattern[k];                
@@ -135,18 +135,15 @@ public class SSDPplus {
 
             } 
             
-            
-           /* D.switchPartition(0);
-            D.generateDpDn(tipoAvaliacao);
-            Avaliador.evaluateWholeBase(Pk, tipoAvaliacao);
-            Arrays.sort(Pk);*/
-            
             numeroGeracoesSemMelhoraPk = 0;
         }
         
+            /*D.switchPartition(0);
+            D.generateDpDn(tipoAvaliacao);
+            Avaliador.evaluateWholeBase(Pk, tipoAvaliacao);
+            Arrays.sort(Pk);*/
         
-        
-               
+             
         
         //return Pbest;
         return Pk;
