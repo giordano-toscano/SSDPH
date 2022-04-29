@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import simulacoes.DPinfo;
 
 /**
@@ -21,7 +22,7 @@ import simulacoes.DPinfo;
  * @author TARCISIO
  */
 public class SSDPplus {
-    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos){
+    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos) throws FileNotFoundException{
         long t0 = System.currentTimeMillis(); //Initial time
         
         Pattern[] Pk = new Pattern[k];                
@@ -137,13 +138,8 @@ public class SSDPplus {
             
             numeroGeracoesSemMelhoraPk = 0;
         }
-        
-            /*D.switchPartition(0);
-            D.generateDpDn(tipoAvaliacao);
-            Avaliador.evaluateWholeBase(Pk, tipoAvaliacao);
-            Arrays.sort(Pk);*/
-        
-             
+            //D.switchPartition(0);
+            //Avaliador.evaluateWholeBase(Pk, tipoAvaliacao); 
         
         //return Pbest;
         return Pk;
@@ -165,10 +161,23 @@ public class SSDPplus {
         //Seed
         Const.random = new Random(Const.SEEDS[0]); 
         //*******************************************
-        //END Data set                    ***************
+        //END Data set                ***************
         //*******************************************
         
-
+        //*******************************************
+        //User                        ***************
+        //*******************************************
+        //int partitionsNumber = 1;
+        //Scanner input = new Scanner(System.in);
+        
+        //System.out.println("Escolha o número de partições:");
+        
+        
+        
+        //*******************************************
+        //End User                    ***************
+        //*******************************************
+        
         //*******************************************
         //SSDP+ parameters            ***************
         //*******************************************
@@ -198,7 +207,7 @@ public class SSDPplus {
         
         System.out.println("Loading data set...");
         D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set        
-        D.generateDpDn(target);
+        D.setup(target);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
         //D.targetValue = "I-III";
         //D.targetValue = "IV-VII";

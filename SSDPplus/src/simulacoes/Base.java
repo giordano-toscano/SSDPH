@@ -40,7 +40,7 @@ public class Base {
 
     public void carregarBaseEmD() throws FileNotFoundException{
         D.loadFile(this.caminhoBase, this.formatacaoBase);
-        D.generateDpDn("p");
+        D.setup("p");
     }
     
     public String getNome() {
