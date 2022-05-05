@@ -165,20 +165,6 @@ public class SSDPplus {
         //*******************************************
         
         //*******************************************
-        //User                        ***************
-        //*******************************************
-        //int partitionsNumber = 1;
-        //Scanner input = new Scanner(System.in);
-        
-        //System.out.println("Escolha o número de partições:");
-        
-        
-        
-        //*******************************************
-        //End User                    ***************
-        //*******************************************
-        
-        //*******************************************
         //SSDP+ parameters            ***************
         //*******************************************
         //k: number of subgroups
@@ -206,7 +192,39 @@ public class SSDPplus {
         double maxTimeSecond =  -1;      
         
         System.out.println("Loading data set...");
-        D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set        
+        D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set 
+        
+         //*******************************************
+        //User Interaction             ***************
+        //*******************************************
+        Scanner input = new Scanner(System.in);
+        int choice;
+        System.out.println("\nEscolha uma das opções:");
+        System.out.println("1 - Processar a base inteira");
+        System.out.println("2 - Processar amostra da base");
+        System.out.println("3 - Separar em partições");
+        System.out.print("Escolha: ");
+        choice = input.nextInt();
+        if(choice != 1){
+            if(choice == 3){
+                System.out.print("Digite o número de partições: ");
+                int partitionsNumber = input.nextInt();
+                if (partitionsNumber == 1){
+                    choice = 2;
+                }else{
+                    D.createPartitions(partitionsNumber);
+                }
+            }
+            if(choice == 2){
+                System.out.print("Digite a porcentagem de exemplos positivos na amostra (ex: 40%): ");
+                double samplingRate = input.nextDouble();
+                D.createSample(samplingRate/100);
+            }
+        }
+        //*******************************************
+        //End User Interaction        ***************
+        //*******************************************
+        
         D.setup(target);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
         //D.targetValue = "I-III";
@@ -244,7 +262,8 @@ public class SSDPplus {
                 "; |D|=" + D.examplesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
-                 ")"); //database name
+                ")"
+        ); //database name
         
         
         
@@ -253,6 +272,9 @@ public class SSDPplus {
         long t0 = System.currentTimeMillis(); //Initial time
         //Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade);
         Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+        if(D.numberOfPartitions>0){
+            //Avaliador.evaluateWholeBase(p, tipoAvaliacao); 
+        }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         
         System.out.println("\n### Top-k subgroups:");
@@ -263,7 +285,8 @@ public class SSDPplus {
                 "; |A|=" + D.attributesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
-                 ")"); //database name
+                ")"
+        ); //database name
         System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
         System.out.println("Time(s): " + tempo);
         System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(p,k));        

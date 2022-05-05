@@ -476,6 +476,7 @@ public class Avaliador {
     }
     
     public static void evaluateWholeBase(Pattern[] Pk, String tipoAvaliacao){
+        D.switchPartition(0);
         HashSet<Integer> itens;
         int TP = 0, FP = 0;
         Pattern Pi;

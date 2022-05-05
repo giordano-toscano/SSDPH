@@ -46,7 +46,7 @@ public class D {
 
     public static String[][] examplesMatrix;
     public static String[][][] partitions;        // an 1D array of 2D arrays
-    public static int numberOfPartitions = 1;
+    public static int numberOfPartitions;
     public static ArrayList<HashSet<String>> valoresDistintosAtributos;
 
     public static String tipoDiscretizacao;
@@ -202,16 +202,23 @@ public class D {
         return dataSample;
     }
 
-    private static void createPartitions() {
-        D.partitions = new String[D.numberOfPartitions][][];
+    public static void createPartitions(int partitionsNumber) {
+        D.numberOfPartitions = partitionsNumber;
+        D.partitions = new String[partitionsNumber + 1][][];
         D.partitions[0] = D.examplesMatrix;
         for (int i = 1; i < D.partitions.length; i++) {
             D.partitions[i] = D.randomSampling(0.4);
         }
     }
+    public static void createSample(double samplingRate) {
+        D.numberOfPartitions = 1;
+        D.partitions = new String[2][][];
+        D.partitions[0] = D.examplesMatrix;
+        D.partitions[1] = D.randomSampling(samplingRate);
+    }
 
-    public static void switchPartition(int partitionNumber) {
-        D.examplesMatrix = D.partitions[partitionNumber];
+    public static void switchPartition(int partitionIndex) {
+        D.examplesMatrix = D.partitions[partitionIndex];
         D.examplesNumber = D.examplesMatrix.length;
         int[][] dadosInt = generateExamplesIntMatrix();
         D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
@@ -258,10 +265,9 @@ public class D {
         //Carrega a partir do nosso formato em D
         D.generateItens();
 
-        if (D.numberOfPartitions > 1) {
-            createPartitions();
+        if (D.numberOfPartitions > 0) {
+            D.switchPartition(1);
         }
-        //D.switchPartition(1);
 
         int[][] dadosInt = generateExamplesIntMatrix();
         D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
