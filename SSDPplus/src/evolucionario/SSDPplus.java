@@ -216,9 +216,13 @@ public class SSDPplus {
                 }
             }
             if(choice == 2){
+                System.out.println("Digite a porcentagem da amostra: ");
+                double totalSampleRate = input.nextDouble();
                 System.out.print("Digite a porcentagem de exemplos positivos na amostra (ex: 40%): ");
                 double samplingRate = input.nextDouble();
-                D.createSample(samplingRate/100);
+                //D.getSampledMatrix();
+                D.createOnePartition(totalSampleRate/100, samplingRate/100);
+                
             }
         }
         //*******************************************
@@ -226,6 +230,7 @@ public class SSDPplus {
         //*******************************************
         
         D.setup(target);
+        //D.getSampledMatrix(0.4);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
         //D.targetValue = "I-III";
         //D.targetValue = "IV-VII";

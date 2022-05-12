@@ -206,15 +206,98 @@ public class D {
         D.numberOfPartitions = partitionsNumber;
         D.partitions = new String[partitionsNumber + 1][][];
         D.partitions[0] = D.examplesMatrix;
+        
         for (int i = 1; i < D.partitions.length; i++) {
             D.partitions[i] = D.randomSampling(0.4);
         }
     }
-    public static void createSample(double samplingRate) {
+    
+    //-------------------------------------------------------------------------------------------------------------------
+    public static void createOnePartition(double totalSampleRate, double samplingRate) {
         D.numberOfPartitions = 1;
         D.partitions = new String[2][][];
         D.partitions[0] = D.examplesMatrix;
-        D.partitions[1] = D.randomSampling(samplingRate);
+        //D.partitions[1] = D.randomSampling(samplingRate);
+        D.partitions[1] = D.getSampledMatrix(totalSampleRate, samplingRate);
+    }
+    
+    public static String[][] getSampledMatrix(double totalSampleRate, double positiveSamplingRate){
+        
+        int sampleSize = (int) (totalSampleRate * D.examplesNumber);
+        int expectedPositiveQty = (int) (sampleSize * positiveSamplingRate);
+        int expectedNegativeQty = sampleSize - expectedPositiveQty;
+       
+        //Capturar número de exemplos positivos (y="p") e negativos (y="n")
+        int indiceRotulo = D.attributesNumber;
+        int countP = 0 , countN = 0;
+        for (int i = 0; i < D.examplesNumber; i++) {
+            String y = D.examplesMatrix[i][indiceRotulo];
+            if (y.equals("p")) {
+                countP++;
+            } else {
+                countN++;
+            }
+        }
+        
+        if(countP < expectedPositiveQty ){
+            System.out.println("\nNúmero de exemplos positivos insuficiente para alcançar a porcentagem solicitada:");
+            System.out.println("Número de exemplos positivos na base: "+ countP);
+            System.out.println("Número de exemplos positivos necessário: " + expectedPositiveQty);
+            expectedPositiveQty = countP;
+            expectedNegativeQty = sampleSize - expectedPositiveQty;
+        }else if(countN < expectedNegativeQty){
+            System.out.println("\nNúmero de exemplos negativos insuficiente para alcançar a porcentagem solicitada:");
+            System.out.println("Número de exemplos negativos na base: "+ countP);
+            System.out.println("Número de exemplos negativos necessário: " + expectedNegativeQty);
+             expectedNegativeQty = countN;
+             expectedPositiveQty = sampleSize - expectedNegativeQty;
+        }
+        
+        String[][] positiveExamples = new String[countP][];
+        String[][] negativeExamples = new String[countN][];
+       
+        int pIndex =0, nIndex =0;
+        for (int i = 0; i < D.examplesMatrix.length; i++) {
+            String y = D.examplesMatrix[i][indiceRotulo];
+            if (y.equals("p")) {
+                positiveExamples[pIndex] = D.examplesMatrix[i];
+                pIndex++;
+            } else {
+                negativeExamples[nIndex] = D.examplesMatrix[i];
+                nIndex++;
+            }
+        }
+        positiveExamples = D.randomSampling(positiveExamples, expectedPositiveQty);
+        negativeExamples = D.randomSampling(negativeExamples, expectedNegativeQty);
+        String[][] resultExamplesMatrix =  new String[positiveExamples.length + negativeExamples.length][];
+        int i;
+        for(i = 0; i < positiveExamples.length; i++){
+            resultExamplesMatrix[i] = positiveExamples[i];
+        }
+        for(int j = 0; j <negativeExamples.length; j++){
+            resultExamplesMatrix[i++] = negativeExamples[j];
+        }
+        System.out.println("\nNÚMERO DE EXEMPLOS NEGATIVOS NA AMOSTRA: "+ negativeExamples.length);
+        System.out.println("NÚMERO DE EXEMPLOS POSTIVOS NA AMOSTRA: "+ positiveExamples.length);
+        System.out.println("TAMNHO DA AMOSTRA: "+ resultExamplesMatrix.length);
+        return resultExamplesMatrix;
+    }
+    private static String[][] randomSampling(String[][] matrix, int sampleSize) {
+        SecureRandom random = new SecureRandom();
+        random.setSeed(Const.SEEDS[0]);
+        String[][] dataSample = new String[sampleSize][matrix[0].length];
+        String[] randomRow;
+        
+        int i = 0;
+        while (i < sampleSize) {
+            randomRow = matrix[(random.nextInt(matrix.length))];
+            if (containsRow(dataSample, randomRow)) {
+                continue;
+            }
+            dataSample[i] = randomRow;
+            i++;
+        }
+        return dataSample;
     }
 
     public static void switchPartition(int partitionIndex) {
@@ -267,10 +350,10 @@ public class D {
 
         if (D.numberOfPartitions > 0) {
             D.switchPartition(1);
+        }else{
+            int[][] dadosInt = generateExamplesIntMatrix();
+            D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
         }
-
-        int[][] dadosInt = generateExamplesIntMatrix();
-        D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
 
         //Filtro determina os itens que serão considerados pelos algoritmos
         //Por padrão todos são aceitos
@@ -397,14 +480,10 @@ public class D {
             String yValue = D.examplesMatrix[i][indiceRotulo];
             //if(yValue.equals(D.targetValue) || yValue.equals("\"" + D.targetValue + "\"\r") || yValue.equals("\'" + D.targetValue + "\'\r") || yValue.equals(D.targetValue + "\r")){
             if (yValue.equals(D.targetValue)) {
-                for (int j = 0; j < D.attributesNumber; j++) {
-                    Dp[indiceDp][j] = dadosInt[i][j];
-                }
+                Dp[indiceDp] = dadosInt[i];
                 indiceDp++;
             } else {
-                for (int j = 0; j < D.attributesNumber; j++) {
-                    Dn[indiceDn][j] = dadosInt[i][j];
-                }
+                Dn[indiceDn] = dadosInt[i];
                 indiceDn++;
             }
         }
