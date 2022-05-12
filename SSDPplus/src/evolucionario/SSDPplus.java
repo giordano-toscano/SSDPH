@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Scanner;
 import simulacoes.DPinfo;
 
 /**
@@ -21,7 +22,7 @@ import simulacoes.DPinfo;
  * @author TARCISIO
  */
 public class SSDPplus {
-    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos){
+    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos) throws FileNotFoundException{
         long t0 = System.currentTimeMillis(); //Initial time
         
         Pattern[] Pk = new Pattern[k];                
@@ -64,7 +65,7 @@ public class SSDPplus {
         int numeroGeracoesSemMelhoraPk = 0;
         int indiceGeracoes = 1;
         
-        //Laço do AG
+        //Genetic Algorithmn loop
         Pattern[] Pnovo = null;
         Pattern[] PAsterisco = null;
         
@@ -137,8 +138,8 @@ public class SSDPplus {
             
             numeroGeracoesSemMelhoraPk = 0;
         }
-        
-               
+            //D.switchPartition(0);
+            //Avaliador.evaluateWholeBase(Pk, tipoAvaliacao); 
         
         //return Pbest;
         return Pk;
@@ -151,10 +152,8 @@ public class SSDPplus {
         //*******************************************
         //Data set                    ***************
         //*******************************************
-        String caminho = "C:\\Users\\tarci\\OneDrive\\Documentos\\NetBeansProjects\\SSDPplusGit\\pastas\\bases\\"; 
-        String nomeBase = "alon-clean50-pn-width-2.CSV";
-        //String nomeBase = "ENEM2014_81_NOTA_10k.csv";
-        //String nomeBase = "matrixBinaria-Global-100-p.csv";
+        String caminho = "D:\\giord\\Giordano\\CC - UNICAP\\PIBIC\\PROJETO SSDP+\\Definitive SSDPH Folder\\ssdp_plus\\data sets\\Text mining\\"; 
+        String nomeBase = "matrixBinaria-Global-100-p.CSV";
         String caminhoBase = caminho + nomeBase;
        
         //separator database (CSV files)
@@ -162,10 +161,9 @@ public class SSDPplus {
         //Seed
         Const.random = new Random(Const.SEEDS[0]); 
         //*******************************************
-        //END Data set                    ***************
+        //END Data set                ***************
         //*******************************************
         
-
         //*******************************************
         //SSDP+ parameters            ***************
         //*******************************************
@@ -194,11 +192,48 @@ public class SSDPplus {
         double maxTimeSecond =  -1;      
         
         System.out.println("Loading data set...");
-        D.CarregarArquivo(caminhoBase, D.TIPO_CSV); //Loading data set        
-        D.GerarDpDn(target);
+        D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set 
+        
+         //*******************************************
+        //User Interaction             ***************
+        //*******************************************
+        Scanner input = new Scanner(System.in);
+        int choice;
+        System.out.println("\nEscolha uma das opções:");
+        System.out.println("1 - Processar a base inteira");
+        System.out.println("2 - Processar amostra da base");
+        System.out.println("3 - Separar em partições");
+        System.out.print("Escolha: ");
+        choice = input.nextInt();
+        if(choice != 1){
+            if(choice == 3){
+                System.out.print("Digite o número de partições: ");
+                int partitionsNumber = input.nextInt();
+                if (partitionsNumber == 1){
+                    choice = 2;
+                }else{
+                    D.createPartitions(partitionsNumber);
+                }
+            }
+            if(choice == 2){
+                System.out.println("Digite a porcentagem da amostra: ");
+                double totalSampleRate = input.nextDouble();
+                System.out.print("Digite a porcentagem de exemplos positivos na amostra (ex: 40%): ");
+                double samplingRate = input.nextDouble();
+                //D.getSampledMatrix();
+                D.createOnePartition(totalSampleRate/100, samplingRate/100);
+                
+            }
+        }
+        //*******************************************
+        //End User Interaction        ***************
+        //*******************************************
+        
+        D.setup(target);
+        //D.getSampledMatrix(0.4);
         //"6,80,104,116,134,145,151,153,156,256"; //target value
-        //D.valorAlvo = "I-III";
-        //D.valorAlvo = "IV-VII";
+        //D.targetValue = "I-III";
+        //D.targetValue = "IV-VII";
         
         
         
@@ -227,12 +262,13 @@ public class SSDPplus {
         D.filtrar(filtrarAtributos, filtrarValores, filtrarAtributosValores);
                
         Pattern.numeroIndividuosGerados = 0; //Initializing count of generated individuals
-        System.out.println("### Data set:" + D.nomeBase + "(|I|=" + D.numeroItens + 
-                "; |A|=" + D.numeroAtributos +
-                "; |D|=" + D.numeroExemplos +
+        System.out.println("### Data set:\n" + D.baseName + "(|I|=" + D.numeroItens + 
+                "; |A|=" + D.attributesNumber +
+                "; |D|=" + D.examplesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
-                 ")"); //database name
+                ")"
+        ); //database name
         
         
         
@@ -241,17 +277,21 @@ public class SSDPplus {
         long t0 = System.currentTimeMillis(); //Initial time
         //Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade);
         Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+        if(D.numberOfPartitions>0){
+            //Avaliador.evaluateWholeBase(p, tipoAvaliacao); 
+        }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         
         System.out.println("\n### Top-k subgroups:");
         Avaliador.imprimirRegras(p, k); 
         
         //Informations about top-k DPs:  
-        System.out.println("### Data set:" + D.nomeBase + "(|I|=" + D.numeroItens + 
-                "; |A|=" + D.numeroAtributos +
+        System.out.println("\n### Data set:" + D.baseName + "(|I|=" + D.numeroItens + 
+                "; |A|=" + D.attributesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
-                 ")"); //database name
+                ")"
+        ); //database name
         System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
         System.out.println("Time(s): " + tempo);
         System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(p,k));        

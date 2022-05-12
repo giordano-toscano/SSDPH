@@ -47,11 +47,11 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         this.itens = itens;
         this.tipoAvaliacao = tipoAvaliacao;            
         if(Pattern.ITENS_OPERATOR == Const.PATTERN_AND){
-            this.vrP = Avaliador.vetorResultantePositivoAND(itens); //Saber se somina ou é dominado. Isso ajuda!
-            this.vrN = Avaliador.vetorResultanteNegativoAND(itens); //Saber se somina ou é dominado. Isso ajuda!
+            this.vrP = Avaliador.vetorResultantePositivoAND(itens); //Saber se domina ou é dominado. Isso ajuda!
+            this.vrN = Avaliador.vetorResultanteNegativoAND(itens); //Saber se domina ou é dominado. Isso ajuda!
         }else if(Pattern.ITENS_OPERATOR == Const.PATTERN_OR){
-            this.vrP = Avaliador.vetorResultantePositivoOR(itens); //Saber se somina ou é dominado. Isso ajuda!
-            this.vrN = Avaliador.vetorResultanteNegativoOR(itens); //Saber se somina ou é dominado. Isso ajuda!        
+            this.vrP = Avaliador.vetorResultantePositivoOR(itens); //Saber se domina ou é dominado. Isso ajuda!
+            this.vrN = Avaliador.vetorResultanteNegativoOR(itens); //Saber se domina ou é dominado. Isso ajuda!        
         }   
         this.TP = Avaliador.TP(this.vrP);
         this.FP = Avaliador.FP(this.vrN);
@@ -87,6 +87,16 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         return vrN;
     }
 
+    public void setVrP(boolean[] vrP) {
+        this.vrP = vrP;
+    }
+
+    public void setVrN(boolean[] vrN) {
+        this.vrN = vrN;
+    }
+    
+    
+
     public int getTP() {
         return TP;
     }
@@ -95,9 +105,24 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         return FP;
     }
 
+    public void setTP(int TP) {
+        this.TP = TP;
+    }
+
+    public void setFP(int FP) {
+        this.FP = FP;
+    }
+    
+    
+
     public double getQualidade() {
         return qualidade;
     }
+
+    public void setQualidade(double qualidade) {
+        this.qualidade = qualidade;
+    }
+    
 
 //    public ArrayList<Pattern> getSinonimos() {
 //        return sinonimos;
@@ -511,8 +536,8 @@ public class Pattern implements Comparable<Pattern>, Serializable{
         }
         str.append(D.itemAtributoStr[ itensArray[j] ] + "=" + D.itemValorStr[ itensArray[j] ]);
         //str.append(itensArray[j]);
-        str.append("}->" + D.valorAlvo);
-        str.append(" (" + D.valorAlvo + "=" + this.TP + ", others=" + this.FP + ")");
+        str.append("}->" + D.targetValue);
+        str.append(" (" + D.targetValue + "=" + this.TP + ", others=" + this.FP + ")");
         
         //Imprimindo métricas passadas como parâmetro.
         DecimalFormat df2 = new DecimalFormat("#.##");

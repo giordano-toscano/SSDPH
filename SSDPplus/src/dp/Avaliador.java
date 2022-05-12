@@ -149,9 +149,9 @@ public class Avaliador {
         if(TP==0 && FP==0){
             return 0.0;
         }
-        double sup = (double)(TP+FP) / (double)D.numeroExemplos;
+        double sup = (double)(TP+FP) / (double)D.examplesNumber;
         double conf = (double)TP / (double)(TP+FP);
-        double confD = (double)D.numeroExemplosPositivo / (double)D.numeroExemplos;
+        double confD = (double)D.numeroExemplosPositivo / (double)D.examplesNumber;
         double wracc = sup * ( conf  - confD);
                        
         return wracc;
@@ -161,9 +161,9 @@ public class Avaliador {
         if(TP==0 && FP==0){
             return 0.0;
         }
-        double sup = (double)(TP+FP) / (double)D.numeroExemplos;
+        double sup = (double)(TP+FP) / (double)D.examplesNumber;
         double conf = (double)TP / (double)(TP+FP);
-        double confD = (double)D.numeroExemplosPositivo / (double)D.numeroExemplos;
+        double confD = (double)D.numeroExemplosPositivo / (double)D.examplesNumber;
         double wracc = sup * ( conf  - confD);
                        
         return 4 * wracc;
@@ -247,9 +247,9 @@ public class Avaliador {
     
     public static double lift(int TP, int FP){
         //Ref: https://en.wikipedia.org/wiki/Lift_(data_mining)
-        double supCond = (double)(TP + FP) / (double)D.numeroExemplos; //Suporte antecedente: número de exemplos da regra sobre o total |D|
-        double supTarget = (double)D.numeroExemplosPositivo / (double)D.numeroExemplos;  //Suporte consequente: número de exemplos com rótulo em relação ao total |Dp| / |D|
-        double supDP = (double)TP/(double)D.numeroExemplos; //Suporte antecedente e consequente: count()
+        double supCond = (double)(TP + FP) / (double)D.examplesNumber; //Suporte antecedente: número de exemplos da regra sobre o total |D|
+        double supTarget = (double)D.numeroExemplosPositivo / (double)D.examplesNumber;  //Suporte consequente: número de exemplos com rótulo em relação ao total |Dp| / |D|
+        double supDP = (double)TP/(double)D.examplesNumber; //Suporte antecedente e consequente: count()
         
         if(supCond == 0 || supTarget == 0){
             return 0;
@@ -280,7 +280,7 @@ public class Avaliador {
        
     public static double cov(int TP, int FP){
         //Ref: survey 2011
-        double valor = (double)(TP + FP) / (double) D.numeroExemplos;
+        double valor = (double)(TP + FP) / (double) D.examplesNumber;
         
         return valor;
     }
@@ -473,6 +473,27 @@ public class Avaliador {
             } 
         }       
         return false; 
+    }
+    
+    public static void evaluateWholeBase(Pattern[] Pk, String tipoAvaliacao){
+        D.switchPartition(0);
+        HashSet<Integer> itens;
+        int TP = 0, FP = 0;
+        Pattern Pi;
+        for(int i = 0; i < Pk.length; i++){
+            Pi = Pk[i];
+            itens = Pi.getItens();
+            Pi.setVrP(Avaliador.vetorResultantePositivoAND(itens));
+            Pi.setVrN(Avaliador.vetorResultanteNegativoAND(itens));
+            Pi.setTP(Avaliador.TP(Pi.getVrP())); 
+            Pi.setFP(Avaliador.FP(Pi.getVrN()));
+            Pi.setQualidade(Avaliador.avaliar(Pi.getTP(), Pi.getFP(), tipoAvaliacao));
+            if (Pi.getSimilares() != null){
+                evaluateWholeBase(Pi.getSimilares(), tipoAvaliacao );
+            }
+            
+        }
+        
     }
     
     
