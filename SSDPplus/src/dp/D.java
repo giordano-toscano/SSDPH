@@ -47,6 +47,7 @@ public class D {
     public static String[][] examplesMatrix;
     public static String[][][] partitions;        // an 1D array of 2D arrays
     public static int numberOfPartitions;
+    
     public static ArrayList<HashSet<String>> valoresDistintosAtributos;
 
     public static String tipoDiscretizacao;
@@ -177,32 +178,9 @@ public class D {
         return dataRowsMatrix;
     }
 
-    /**
-     * Recebe uma matriz contendo todas as linhas da base e retorna uma amostra de exemplos aleatórios. Além disso:
-     *
-     * @param dataRowsString
-     * @return dataSampleString :ArrayList<String[]>
-     */
-    private static String[][] randomSampling(double samplingRate) {
-        SecureRandom random = new SecureRandom();
-        random.setSeed(Const.SEEDS[0]);
-        int sampleSize = (int) (samplingRate * D.examplesNumber);
-        String[][] dataSample = new String[sampleSize][D.attributesNumber + 1];
-        String[] randomRow;
-
-        int i = 0;
-        while (i < sampleSize) {
-            randomRow = D.examplesMatrix[(random.nextInt(D.examplesNumber))];
-            if (containsRow(dataSample, randomRow)) {
-                continue;
-            }
-            dataSample[i] = randomRow;
-            i++;
-        }
-        return dataSample;
-    }
-
     public static void createPartitions(int partitionsNumber) {
+        D.partitions = new String[partitionsNumber + 1][][];
+        D.numberOfPartitions = partitionsNumber;
         //Capturar número de exemplos positivos (y="p") e negativos (y="n")
         int indiceRotulo = D.attributesNumber;
         int countP = 0 , countN = 0;
@@ -215,28 +193,38 @@ public class D {
             }
         }
         int positivesEachPartition = countP/partitionsNumber;
+        int negativesEachPartition = countN/partitionsNumber;
         
-        String[][] positiveExamples = new String[countP][];
-        String[][] negativeExamples = new String[countN][];
+        String[][] positiveExamplesC = new String[countP][];
+        String[][] negativeExamplesC = new String[countN][];
        
         int pIndex =0, nIndex =0;
         for (int i = 0; i < D.examplesMatrix.length; i++) {
             String y = D.examplesMatrix[i][indiceRotulo];
             if (y.equals("p")) {
-                positiveExamples[pIndex] = D.examplesMatrix[i];
+                positiveExamplesC[pIndex] = D.examplesMatrix[i];
                 pIndex++;
             } else {
-                negativeExamples[nIndex] = D.examplesMatrix[i];
+                negativeExamplesC[nIndex] = D.examplesMatrix[i];
                 nIndex++;
             }
         }
         
-        D.numberOfPartitions = partitionsNumber;
-        D.partitions = new String[partitionsNumber + 1][][];
         D.partitions[0] = D.examplesMatrix;
-        
-        for (int i = 1; i < D.partitions.length; i++) {
-            D.partitions[i] = D.randomSampling(0.4);
+        String[][] resultExamplesMatrix;
+        int i;
+        for(int n = 1; n < D.numberOfPartitions; n++){
+            String[][] positiveExamples = D.randomSampling(positiveExamplesC, positivesEachPartition);
+            String [][] negativeExamples = D.randomSampling(negativeExamplesC, negativesEachPartition);
+            resultExamplesMatrix =  new String[positiveExamples.length + negativeExamples.length][];
+            
+            for(i = 0; i < positiveExamples.length; i++){
+                resultExamplesMatrix[i] = positiveExamples[i];
+            }
+            for(int j = 0; j <negativeExamples.length; j++){
+                resultExamplesMatrix[i++] = negativeExamples[j];
+            }
+            D.partitions[n] = resultExamplesMatrix;
         }
     }
     
@@ -314,6 +302,12 @@ public class D {
     }
     //-------------------------------------------------------------------------------------------------------------------
     
+    /**
+     * Recebe uma matriz contendo todas as linhas da base e retorna uma amostra de exemplos aleatórios. Além disso:
+     *
+     * @param dataRowsString
+     * @return dataSampleString :ArrayList<String[]>
+     */
     private static String[][] randomSampling(String[][] matrix, int sampleSize) {
         SecureRandom random = new SecureRandom();
         random.setSeed(Const.SEEDS[0]);
@@ -381,7 +375,7 @@ public class D {
         D.generateItens();
 
         if (D.numberOfPartitions > 0) {
-            D.switchPartition(1);
+            D.switchPartition(4);
         }else{
             int[][] dadosInt = generateExamplesIntMatrix();
             D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)

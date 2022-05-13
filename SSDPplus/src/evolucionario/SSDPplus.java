@@ -216,7 +216,7 @@ public class SSDPplus {
                 }
             }
             if(choice == 2){
-                System.out.println("Digite a porcentagem da amostra: ");
+                System.out.print("Digite a porcentagem da amostra: ");
                 double totalSampleRate = input.nextDouble();
                 System.out.print("Digite a porcentagem de exemplos positivos na amostra (ex: 40%): ");
                 double samplingRate = input.nextDouble();
@@ -281,7 +281,8 @@ public class SSDPplus {
             //Avaliador.evaluateWholeBase(p, tipoAvaliacao); 
         }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
-        
+        printInfo(p, k,tempo, tipoAvaliacao );
+        /*
         System.out.println("\n### Top-k subgroups:");
         Avaliador.imprimirRegras(p, k); 
         
@@ -316,6 +317,45 @@ public class SSDPplus {
             //Const.METRICA_CONF            
         };
         Avaliador.imprimirRegras(p, k, metricas, false, false, true);
-              
+        */
+    }
+    
+    public static void printInfo(Pattern[] p, int k, double tempo, String tipoAvaliacao ){
+        
+       System.out.println("\n### Top-k subgroups:");
+        Avaliador.imprimirRegras(p, k); 
+        
+        //Informations about top-k DPs:  
+        System.out.println("\n### Data set:" + D.baseName + "(|I|=" + D.numeroItens + 
+                "; |A|=" + D.attributesNumber +
+                "; |D+|=" + D.numeroExemplosPositivo +
+                "; |D-|=" + D.numeroExemplosNegativo +
+                ")"
+        ); //database name
+        System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
+        System.out.println("Time(s): " + tempo);
+        System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(p,k));        
+        System.out.println("Coverage of all Pk DPs in relation to D+: " + Avaliador.coberturaPositivo(p, k)*100 + "%");
+        System.out.println("Description Redundancy Item Dominador (|itemDominador|/k): " + DPinfo.descritionRedundancyDominator(p));
+        System.out.println("Number of individuals generated: " + Pattern.numeroIndividuosGerados);
+        
+        System.out.println("\n### Top-k and caches");
+        //Avaliador.imprimirRegrasSimilares(p, k); 
+        String[] metricas = {
+            Const.METRICA_QUALIDADE,
+            Const.METRICA_SIZE,
+            //Const.METRICA_WRACC,
+            //Const.METRICA_Qg,
+            //Const.METRICA_DIFF_SUP,
+            //Const.METRICA_LIFT,
+            //Const.METRICA_CHI_QUAD,
+            //Const.METRICA_P_VALUE,
+            //Const.METRICA_SUPP_POSITIVO,
+            //Const.METRICA_SUPP_NEGATIVO,
+            //Const.METRICA_COV,
+            //Const.METRICA_CONF            
+        };
+        Avaliador.imprimirRegras(p, k, metricas, false, false, true);
+        
     }
 }
