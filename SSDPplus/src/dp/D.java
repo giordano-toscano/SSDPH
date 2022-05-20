@@ -213,7 +213,7 @@ public class D {
         D.partitions[0] = D.examplesMatrix;
         String[][] resultExamplesMatrix;
         int i;
-        for(int n = 1; n < D.numberOfPartitions; n++){
+        for(int n = 1; n < D.partitions.length; n++){
             String[][] positiveExamples = D.randomSampling(positiveExamplesC, positivesEachPartition);
             String [][] negativeExamples = D.randomSampling(negativeExamplesC, negativesEachPartition);
             resultExamplesMatrix =  new String[positiveExamples.length + negativeExamples.length][];
@@ -229,12 +229,12 @@ public class D {
     }
     
     //-------------------------------------------------------------------------------------------------------------------
-    public static void createOnePartition(double totalSampleRate, double samplingRate) {
+    public static void createOnePartition(double totalSampleRate, double samplingRate) {    // REFACTOR
         D.numberOfPartitions = 1;
         D.partitions = new String[2][][];
         D.partitions[0] = D.examplesMatrix;
         //D.partitions[1] = D.randomSampling(samplingRate);
-        D.partitions[1] = D.getSampledMatrix(totalSampleRate, samplingRate);
+        D.partitions[1] = D.getSampledMatrix(totalSampleRate, samplingRate);          
     }
     
     private static String[][] getSampledMatrix(double totalSampleRate, double positiveSamplingRate){
@@ -310,7 +310,7 @@ public class D {
      */
     private static String[][] randomSampling(String[][] matrix, int sampleSize) {
         SecureRandom random = new SecureRandom();
-        random.setSeed(Const.SEEDS[0]);
+        //random.setSeed(Const.SEEDS[0]);
         String[][] dataSample = new String[sampleSize][matrix[0].length];
         String[] randomRow;
         
@@ -375,7 +375,7 @@ public class D {
         D.generateItens();
 
         if (D.numberOfPartitions > 0) {
-            D.switchPartition(4);
+            D.switchPartition(1);
         }else{
             int[][] dadosInt = generateExamplesIntMatrix();
             D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)

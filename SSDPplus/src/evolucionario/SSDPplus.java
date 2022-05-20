@@ -262,29 +262,38 @@ public class SSDPplus {
         D.filtrar(filtrarAtributos, filtrarValores, filtrarAtributosValores);
                
         Pattern.numeroIndividuosGerados = 0; //Initializing count of generated individuals
-        System.out.println("### Data set:\n" + D.baseName + "(|I|=" + D.numeroItens + 
-                "; |A|=" + D.attributesNumber +
-                "; |D|=" + D.examplesNumber +
-                "; |D+|=" + D.numeroExemplosPositivo +
-                "; |D-|=" + D.numeroExemplosNegativo +
-                ")"
-        ); //database name
         
-        
+        Pattern[] pk;
+        String partitionsInfo = "";
         
         System.out.println("SSDP+ running...");
         //Rodando SSDP
         long t0 = System.currentTimeMillis(); //Initial time
         //Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade);
-        Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
-        if(D.numberOfPartitions>0){
-            //Avaliador.evaluateWholeBase(p, tipoAvaliacao); 
+        if(D.numberOfPartitions > 0){
+            int j = 0;
+            Pattern[][] pList = new Pattern[D.numberOfPartitions][];
+            pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+            partitionsInfo = printInfo(j);
+            for(int i = 2; i < D.numberOfPartitions+1; i++){
+                pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+                partitionsInfo += printInfo(j);
+                D.switchPartition(i);   
+            }
+            pk = pList[0];
+            for(int i = 1; i < D.numberOfPartitions; i++){
+                SELECAO.salvandoRelevantesDPmais(pk, pList[i], similaridade);
+            }
+            //Avaliador.evaluateWholeBase(pk, tipoAvaliacao); 
+        }else{
+            pk = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
         }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
-        printInfo(p, k,tempo, tipoAvaliacao );
-        /*
+        
+        System.out.println(partitionsInfo);
+       
         System.out.println("\n### Top-k subgroups:");
-        Avaliador.imprimirRegras(p, k); 
+        Avaliador.imprimirRegras(pk, k); 
         
         //Informations about top-k DPs:  
         System.out.println("\n### Data set:" + D.baseName + "(|I|=" + D.numeroItens + 
@@ -293,11 +302,11 @@ public class SSDPplus {
                 "; |D-|=" + D.numeroExemplosNegativo +
                 ")"
         ); //database name
-        System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
+        System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(pk, k));
         System.out.println("Time(s): " + tempo);
-        System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(p,k));        
-        System.out.println("Coverage of all Pk DPs in relation to D+: " + Avaliador.coberturaPositivo(p, k)*100 + "%");
-        System.out.println("Description Redundancy Item Dominador (|itemDominador|/k): " + DPinfo.descritionRedundancyDominator(p));
+        System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(pk,k));        
+        System.out.println("Coverage of all Pk DPs in relation to D+: " + Avaliador.coberturaPositivo(pk, k)*100 + "%");
+        System.out.println("Description Redundancy Item Dominador (|itemDominador|/k): " + DPinfo.descritionRedundancyDominator(pk));
         System.out.println("Number of individuals generated: " + Pattern.numeroIndividuosGerados);
         
         System.out.println("\n### Top-k and caches");
@@ -316,46 +325,16 @@ public class SSDPplus {
             //Const.METRICA_COV,
             //Const.METRICA_CONF            
         };
-        Avaliador.imprimirRegras(p, k, metricas, false, false, true);
-        */
+        Avaliador.imprimirRegras(pk, k, metricas, false, false, true);
+        
     }
     
-    public static void printInfo(Pattern[] p, int k, double tempo, String tipoAvaliacao ){
-        
-       System.out.println("\n### Top-k subgroups:");
-        Avaliador.imprimirRegras(p, k); 
-        
-        //Informations about top-k DPs:  
-        System.out.println("\n### Data set:" + D.baseName + "(|I|=" + D.numeroItens + 
+    public static String printInfo(int j){
+       return "\n### Partition "+ (j) +": " + D.baseName + "(|I|=" + D.numeroItens + 
                 "; |A|=" + D.attributesNumber +
                 "; |D+|=" + D.numeroExemplosPositivo +
                 "; |D-|=" + D.numeroExemplosNegativo +
-                ")"
-        ); //database name
-        System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
-        System.out.println("Time(s): " + tempo);
-        System.out.println("Average size: " + Avaliador.avaliarMediaDimensoes(p,k));        
-        System.out.println("Coverage of all Pk DPs in relation to D+: " + Avaliador.coberturaPositivo(p, k)*100 + "%");
-        System.out.println("Description Redundancy Item Dominador (|itemDominador|/k): " + DPinfo.descritionRedundancyDominator(p));
-        System.out.println("Number of individuals generated: " + Pattern.numeroIndividuosGerados);
-        
-        System.out.println("\n### Top-k and caches");
-        //Avaliador.imprimirRegrasSimilares(p, k); 
-        String[] metricas = {
-            Const.METRICA_QUALIDADE,
-            Const.METRICA_SIZE,
-            //Const.METRICA_WRACC,
-            //Const.METRICA_Qg,
-            //Const.METRICA_DIFF_SUP,
-            //Const.METRICA_LIFT,
-            //Const.METRICA_CHI_QUAD,
-            //Const.METRICA_P_VALUE,
-            //Const.METRICA_SUPP_POSITIVO,
-            //Const.METRICA_SUPP_NEGATIVO,
-            //Const.METRICA_COV,
-            //Const.METRICA_CONF            
-        };
-        Avaliador.imprimirRegras(p, k, metricas, false, false, true);
-        
+                ")"; //database name
     }
+    
 }
