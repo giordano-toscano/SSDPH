@@ -518,6 +518,15 @@ public class Avaliador {
     }
     
     //Imprime regras em texto
+    public static void imprimirRegras3(Pattern[] p, int kPrimeiros){
+        Pattern vazio = new Pattern(new HashSet<Integer>(), p[0].getTipoAvaliacao());
+        System.out.println(vazio.toString2());
+        for(int i = 0; i < p.length; i++){
+            System.out.println(p[i].toString2());        
+        }        
+    }
+    
+    //Imprime regras em texto
     public static void imprimirRegras(Pattern[] p, int kPrimeiros, String[] metricas, boolean imprimirCoberturaDp, boolean imprimirCoberturaDn, boolean imprimirSimilares){
         Pattern vazio = new Pattern(new HashSet<Integer>(), p[0].getTipoAvaliacao());
         System.out.println(vazio.toString2());

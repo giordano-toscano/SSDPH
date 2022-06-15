@@ -10,6 +10,7 @@ import dp.Avaliador;
 import dp.Const;
 import dp.D;
 import dp.Pattern;
+import exatos.GulosoD;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,20 +23,21 @@ import simulacoes.DPinfo;
  * @author TARCISIO
  */
 public class SSDPplus {
-    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos) throws FileNotFoundException{
+    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos,int maxDimensao) throws FileNotFoundException{
         long t0 = System.currentTimeMillis(); //Initial time
         
-        Pattern[] Pk = new Pattern[k];                
+        Pattern[] Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, 60, maxDimensao);
         Pattern[] P = null;
         
         //Inicializa Pk com indivíduos vazios
-        for(int i = 0; i < Pk.length;i++){
+        /*for(int i = 0; i < Pk.length;i++){
             Pk[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
-        }
+        }*/
         
         //System.out.println("Inicializando população...");
         //Inicializa garantindo que P maior que Pk sempre! em bases pequenas isso nem sempre ocorre
-        Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
+        //Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
+        Pattern[] Paux = INICIALIZAR.aleatorio1_D_Pk2(tipoAvaliacao, D.numeroItensUtilizados, maxDimensao+1, Pk);
         if(Paux.length < k){
             P = new Pattern[k];            
             for(int i = 0; i < k; i++){
@@ -63,7 +65,7 @@ public class SSDPplus {
 //        Avaliador.imprimirDimensaoQuantidade(P, P.length, 15);
 
         int numeroGeracoesSemMelhoraPk = 0;
-        int indiceGeracoes = 1;
+        int indiceGeracoes = maxDimensao;
         
         //Genetic Algorithmn loop
         Pattern[] Pnovo = null;
@@ -190,6 +192,7 @@ public class SSDPplus {
         
         //max time simulation in second (-1 for infinity)
         double maxTimeSecond =  -1;      
+        int maxDimensao = 2;
         
         System.out.println("Loading data set...");
         D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set 
@@ -273,10 +276,10 @@ public class SSDPplus {
         if(D.numberOfPartitions > 0){
             int j = 0;
             Pattern[][] pList = new Pattern[D.numberOfPartitions][];
-            pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+            pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
             partitionsInfo = printInfo(j);
             for(int i = 2; i < D.numberOfPartitions+1; i++){
-                pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+                pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
                 partitionsInfo += printInfo(j);
                 D.switchPartition(i);   
             }
@@ -286,7 +289,7 @@ public class SSDPplus {
             }
             //Avaliador.evaluateWholeBase(pk, tipoAvaliacao); 
         }else{
-            pk = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+            pk = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
         }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         
