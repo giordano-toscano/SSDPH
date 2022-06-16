@@ -192,7 +192,7 @@ public class SSDPplus {
         
         //max time simulation in second (-1 for infinity)
         double maxTimeSecond =  -1;      
-        int maxDimensao = 2;
+        int maxDimensao;
         
         System.out.println("Loading data set...");
         D.loadFile(caminhoBase, D.TIPO_CSV); //Loading data set 
@@ -228,6 +228,8 @@ public class SSDPplus {
                 
             }
         }
+        System.out.print("Escolha o número máximo de dimensões (recomendado 3): ");
+        maxDimensao = input.nextInt();
         //*******************************************
         //End User Interaction        ***************
         //*******************************************
