@@ -609,7 +609,7 @@ public class GulosoD {
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         
         System.out.println("\n### Top-k DPs:");
-        Avaliador.imprimirRegras(p, k); 
+        Avaliador.imprimirRegras3(p, k); 
         
         //Informations about top-k DPs:  
         System.out.println("### Base:" + D.baseName + "(|I|=" + D.numeroItens + 

@@ -126,6 +126,90 @@ public class INICIALIZAR {
         return P0;
     }
     
+    /**Inicializa população da seguinte forma:
+     * 60% aleatório com número de itens igual a dimensão média dos top-k DPs
+     * 10% aleatório com número de itens igual a dimensão média dos top-k DPs e utilizando apenas os itens dos top-k DPs.
+     *@author Tarcísio Pontes
+     * @param tipoAvaliacao int - tipo de avaliação utilizado para qualificar indivíduo
+     * @param Pk Pattern[] - k melhores DPs: referência para criar metade da população
+     * @param tamanhoPopulacao int - tamanho da população
+     * @return Pattern[] - nova população
+     */
+    public static Pattern[] aleatorio1_D_Pk2(String tipoAvaliacao, int tamanhoPopulacao, int numeroDimensoes, Pattern[] Pk){
+        if(numeroDimensoes < 2){
+            numeroDimensoes = 2;
+        }
+        
+        //População que será retornada        
+        Pattern[] P0 = new Pattern[tamanhoPopulacao];
+        
+        int populationWithRndItens = (int) (tamanhoPopulacao*0.5); // 0.5
+        int populationsWithPkItens = (int) (tamanhoPopulacao*0.3); // 0.3
+        int populationWithRndOrPkItens = tamanhoPopulacao - (populationWithRndItens + populationsWithPkItens);
+        
+        //Adicionando aleatoriamente com até numeroDimensoes itens
+        int i = 0;
+        HashSet<Integer> rndItens;
+        for(; i < populationWithRndItens; i++){
+            rndItens = new HashSet<Integer>();
+            while(rndItens.size() < numeroDimensoes){
+                rndItens.add(D.itensUtilizados[Const.random.nextInt(D.numeroItensUtilizados)]);
+            }            
+            P0[i] = new Pattern(rndItens, tipoAvaliacao);
+        }        
+        
+        
+        //Coletanto todos os itens distintos da população Pk.
+        HashSet<Integer> itensPk = new HashSet<>();
+        for(int n = 0; n < Pk.length; n++){
+            itensPk.addAll(Pk[n].getItens());
+        }
+        int[] itensPkArray = new int[itensPk.size()];
+        
+        Iterator iterator = itensPk.iterator();
+        int n = 0;        
+        while(iterator.hasNext()){
+            itensPkArray[n++] = (int)iterator.next();
+        }
+        
+        //Gerando parte da população utilizando os itens presentes em Pk        
+        for(int j = 0; j < populationsWithPkItens; j++){
+            HashSet<Integer> itens = new HashSet<Integer>();
+            
+            while(itens.size() < numeroDimensoes){
+                if(itensPkArray.length > numeroDimensoes){
+                    itens.add(itensPkArray[Const.random.nextInt(itensPkArray.length)]);
+                }else{//Caso especial: existem menos itens nas top-k do que o tamanho exigido para o invíduo             
+                    if(Const.random.nextBoolean()){
+                        itens.add(itensPkArray[Const.random.nextInt(itensPkArray.length)]);
+                    }else{
+                        itens.add(D.itensUtilizados[Const.random.nextInt(D.numeroItensUtilizados)]);
+                    }
+                }
+                
+            }
+                  
+            P0[i++] = new Pattern(itens, tipoAvaliacao);
+        } 
+        HashSet<Integer> rndOrPkItens;
+        for(int k = 0; k < populationWithRndOrPkItens; k++){
+            rndOrPkItens = new HashSet<Integer>();
+            while(rndOrPkItens.size() < numeroDimensoes){
+                if(Const.random.nextBoolean()){
+                    rndOrPkItens.add(itensPkArray[Const.random.nextInt(itensPkArray.length)]);
+                }else{
+                    rndOrPkItens.add(D.itensUtilizados[Const.random.nextInt(D.numeroItensUtilizados)]);
+                }
+                
+            }            
+            P0[i++] = new Pattern(rndOrPkItens, tipoAvaliacao);
+        } 
+        
+        
+        
+        return P0;
+    }
+    
     
        
     
