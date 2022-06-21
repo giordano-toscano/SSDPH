@@ -27,6 +27,20 @@ public class Const {
     public final static String ALGORITMO_SSDPmaisS90 = "SSDPplusS90";
     public final static String ALGORITMO_SSDPmaisS100 = "SSDPplusS100";
     
+    
+    public final static String ALGORITMO_SSDPH = "SSDPH";
+    public final static String ALGORITMO_SSDPHS00 = "SSDPHS00";
+    public final static String ALGORITMO_SSDPHS10 = "SSDPHS10";
+    public final static String ALGORITMO_SSDPHS20 = "SSDPHS20";
+    public final static String ALGORITMO_SSDPHS30 = "SSDPHS30";
+    public final static String ALGORITMO_SSDPHS40 = "SSDPHS40";
+    public final static String ALGORITMO_SSDPHS50 = "SSDPHS50";
+    public final static String ALGORITMO_SSDPHS60 = "SSDPHS60";
+    public final static String ALGORITMO_SSDPHS70 = "SSDPHS70";
+    public final static String ALGORITMO_SSDPHS80 = "SSDPHS80";    
+    public final static String ALGORITMO_SSDPHS90 = "SSDPHS90";
+    public final static String ALGORITMO_SSDPHS100 = "SSDPHS100";
+    
     public final static String ALGORITMO_GulosoDplus = "GulosoDplus";
     public final static String ALGORITMO_GulosoDplus4D = "GulosoDplus4D";
     
@@ -97,13 +111,13 @@ public class Const {
 //    public final static String CAMINHO_DICIONARIOS = Const.CAMINHO + "dicionarios/";
 //    public final static String CAMINHO_INDICE = Const.CAMINHO + "indice.txt";
     
-    public final static String CAMINHO_BASES = "../DP4/pastas/bases/";
-    public final static String CAMINHO_BASES_EDITADAS = "../DP4/pastas/bases_editadas/";
-    public final static String CAMINHO_RESULTADOS = "../DP4/pastas/resultados/";
-    public final static String CAMINHO_RESULTADOS_OBJ = "../DP4/pastas/resultados_obj/";  
-    public final static String CAMINHO_RELATORIO = "../DP4/pastas/relatorios/";
-    public final static String CAMINHO_DICIONARIOS = "../DP4/pastas/dicionarios/";
-    public final static String CAMINHO_INDICE = "../DP4/pastas/indice.txt";
+    public final static String CAMINHO_BASES = "../SSDPplus/pastas/bases/";
+    public final static String CAMINHO_BASES_EDITADAS = "../SSDPplus/pastas/bases_editadas/";
+    public final static String CAMINHO_RESULTADOS = "../SSDPplus/pastas/resultados/";
+    public final static String CAMINHO_RESULTADOS_OBJ = "../SSDPplus/pastas/resultados_obj/";  
+    public final static String CAMINHO_RELATORIO = "../SSDPplus/pastas/relatorios/";
+    public final static String CAMINHO_DICIONARIOS = "../SSDPplus/pastas/dicionarios/";
+    public final static String CAMINHO_INDICE = "../SSDPplus/pastas/indice.txt";
        
     public static Random random;   
     public final static long[] SEEDS = {179424673, 125164703, 132011827, 124987441, 123979721 , 119777719, 117705823 , 112131119, 108626351, 107980007, 

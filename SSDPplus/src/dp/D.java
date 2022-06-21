@@ -305,12 +305,10 @@ public class D {
     
     private static int[] shuffle(ArrayList<Integer> vArrayList) {
         int[] v = new int[vArrayList.size()];
-        SecureRandom random = new SecureRandom();
-        random.setSeed(Const.SEEDS[0]);
         int randomIndex;
         int i = 0;
         while (i < v.length) {
-            randomIndex = random.nextInt(vArrayList.size());
+            randomIndex = Const.random.nextInt(vArrayList.size());
             v[i] = vArrayList.get(randomIndex);
             vArrayList.remove(randomIndex);
             i++;

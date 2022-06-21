@@ -13,7 +13,7 @@ import dp.Pattern;
 import exatos.GulosoD;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.HashSet;
+//import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 import simulacoes.DPinfo;
@@ -22,12 +22,12 @@ import simulacoes.DPinfo;
  *
  * @author TARCISIO
  */
-public class SSDPplus {
+public class SSDPH {
     public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos,int maxDimensao) throws FileNotFoundException{
         long t0 = System.currentTimeMillis(); //Initial time
         
-        Pattern[] Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, 60, maxDimensao);
-        Pattern[] P = null;
+        Pattern[] Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, -1, maxDimensao);
+        Pattern[] P;
         
         //Inicializa Pk com indivíduos vazios
         /*for(int i = 0; i < Pk.length;i++){
@@ -274,14 +274,14 @@ public class SSDPplus {
         System.out.println("SSDP+ running...");
         //Rodando SSDP
         long t0 = System.currentTimeMillis(); //Initial time
-        //Pattern[] p = SSDPplus.run(k, tipoAvaliacao, similaridade);
+        //Pattern[] p = SSDPH.run(k, tipoAvaliacao, similaridade);
         if(D.numberOfPartitions > 0){
             int j = 0;
             Pattern[][] pList = new Pattern[D.numberOfPartitions][];
-            pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
+            pList[j++] = SSDPH.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
             partitionsInfo = printInfo(j);
             for(int i = 2; i < D.numberOfPartitions+1; i++){
-                pList[j++] = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
+                pList[j++] = SSDPH.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
                 partitionsInfo += printInfo(j);
                 D.switchPartition(i);   
             }
@@ -291,7 +291,7 @@ public class SSDPplus {
             }
             //Avaliador.evaluateWholeBase(pk, tipoAvaliacao); 
         }else{
-            pk = SSDPplus.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
+            pk = SSDPH.run(k, tipoAvaliacao, similaridade, maxTimeSecond,maxDimensao);
         }
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         
