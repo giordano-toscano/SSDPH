@@ -171,108 +171,50 @@ public class SimulacaoGeral {
                         long t0 = System.currentTimeMillis();                
                         switch(algoritmo){
                             case Const.ALGORITMO_SSDPmais:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.7, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS00:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.0, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS10:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.1, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS20:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.2, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS30:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.3, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS40:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.4, tempoMaximoSegundosAlgoritmos);
-                                break;
-                            case Const.ALGORITMO_SSDPmaisS50:
                                 p = SSDPmais.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos);
                                 break;
-                            case Const.ALGORITMO_SSDPmaisS60:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.6, tempoMaximoSegundosAlgoritmos);
-                                break;                            
-                            case Const.ALGORITMO_SSDPmaisS70:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.7, tempoMaximoSegundosAlgoritmos);
-                                break;                            
-                            case Const.ALGORITMO_SSDPmaisS80:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.8, tempoMaximoSegundosAlgoritmos);
-                                break;                     
-                            case Const.ALGORITMO_SSDPmaisS90:
-                                p = SSDPmais.run(k, tipoAvaliacao, 0.9, tempoMaximoSegundosAlgoritmos);
+                            case Const.ALGORITMO_SSDPHD1:
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
-                            case Const.ALGORITMO_SSDPmaisS100:
-                                p = SSDPmais.run(k, tipoAvaliacao, 1.0, tempoMaximoSegundosAlgoritmos);
+                            case Const.ALGORITMO_SSDPHD2:
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
                                 break;
-                            case Const.ALGORITMO_GulosoDplus:
-                                p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.7, tempoMaximoSegundosAlgoritmos, 4);
-                                break;  
-                             case Const.ALGORITMO_SSDPHS90:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.9, tempoMaximoSegundosAlgoritmos,2);
+                            case Const.ALGORITMO_SSDPHD3:
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
                                 break;
-                            case Const.ALGORITMO_SSDPHS50:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos,2);
+                            case Const.ALGORITMO_ED1:
+                                p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
-                            case Const.ALGORITMO_SSDPHS10:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.1, tempoMaximoSegundosAlgoritmos,2);
+                            case Const.ALGORITMO_ED2:
+                                p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
                                 break;
-//                            case Const.ALGORITMO_SSDPmais10Pbest:
-//                                p = SSDPmaisPbest.run(k, tipoAvaliacao, 0.1);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais50Pbest:
-//                                p = SSDPmaisPbest.run(k, tipoAvaliacao, 0.5);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais90Pbest:
-//                                p = SSDPmaisPbest.run(k, tipoAvaliacao, 0.9);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais10Prb:
-//                                p = SSDPmaisRandom50Best50.run(k, tipoAvaliacao, 0.1);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais50Prb:
-//                                p = SSDPmaisRandom50Best50.run(k, tipoAvaliacao, 0.5);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais90Prb:
-//                                p = SSDPmaisRandom50Best50.run(k, tipoAvaliacao, 0.9);
-//                                break;
-                                
-//                            case Const.ALGORITMO_SSDPmaisPbest:
-//                                p = SSDPmaisPbest.run(k, tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisPbest2k:
-//                                p = SSDPmaisPbest2k.run(k, Math.max(2*k, 10), tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisPbest2kselection:
-//                                p = SSDPmaisPbest2kselection.run(k, Math.max(2*k, 10), tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisRandom50Best50:
-//                                p = SSDPmaisRandom50Best50.run(k, tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisRandom50Best502k:
-//                                p = SSDPmaisRandom50Best502k.run(k, Math.max(2*k, 10), tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisRandom50Best502kselection:
-//                                p = SSDPmaisRandom50Best502kselection.run(k, Math.max(2*k, 10), tipoAvaliacao, 0.8);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais70NA:
-//                                D.filtrar(null, new String[]{"NA"}, null);
-//                                p = SSDPmais.run(k, tipoAvaliacao, 0.7);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmais10NA:
-//                                D.filtrar(null, new String[]{"NA"}, null);
-//                                p = SSDPmais.run(k, tipoAvaliacao, 0.1);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisPbest:
-//                                p = SSDPmaisPbest.run(k, tipoAvaliacao, 0.7);
-//                                break;
-//                            case Const.ALGORITMO_SSDPmaisPnew:
-//                                p = SSDPmaisPnew.run(k, tipoAvaliacao, 0.7);
-//                                break;    
-//                            case Const.ALGORITMO_SSDPmaisRandom:
-//                                p = SSDPmaisRandom.run(k, tipoAvaliacao, 0.7);
-//                                break;
-//                            
+                            case Const.ALGORITMO_ED3:
+                                p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
+                                break;
+                            case Const.ALGORITMO_SSDPHp20aD1:
+                                D.createOnePartition(0.2, -1);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;
+                            case Const.ALGORITMO_SSDPHp60aD1:
+                                D.createOnePartition(0.6, -1);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;
+                            case Const.ALGORITMO_SSDPHp20b50D1:
+                                D.createOnePartition(0.2, 0.5);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;
+                            case Const.ALGORITMO_SSDPHp60b50D1:
+                                D.createOnePartition(0.6, 0.5);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;
+                            case Const.ALGORITMO_SSDPHpn5D1:
+                                D.createPartitions(5);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;
+                            case Const.ALGORITMO_SSDPHpn10D1:
+                                D.createPartitions(10);
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                break;               
                         }                       
                                                 
                         double tempo = (System.currentTimeMillis() - t0)/1000.0;
@@ -322,20 +264,15 @@ public class SimulacaoGeral {
         //int[] K = {1,5,10,20};
         //int[] K = {5,10};
         //int numeroRepeticoes = 1;
-        int numeroRepeticoes = 30; // era 30
+        int numeroRepeticoes = 10; // era 30
         double  tempoMaximoSegundosAlgoritmos = -1;    // 60*60*1; //max 1h
         String[] algoritmos = {//Const.ALGORITMO_AG,
             //Const.ALGORITMO_SD,                
             
            
-            Const.ALGORITMO_SSDPHS50,
+            Const.ALGORITMO_SSDPHD1
          
-   
-            Const.ALGORITMO_SSDPmaisS50,
-           
-            //Const.ALGORITMO_SD,
-            //Const.ALGORITMO_SD_RSS
-                
+            //Const.ALGORITMO_SSDPmais
             //Const.ALGORITMO_SSDPmais,
             //Const.ALGORITMO_GulosoDplus,
                             //Const.ALGORITMO_SSDPmais10Pbest,

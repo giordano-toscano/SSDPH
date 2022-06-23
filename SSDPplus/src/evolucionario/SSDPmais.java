@@ -210,7 +210,7 @@ public class SSDPmais {
                 + "; |D+|=" + D.numeroExemplosPositivo
                 + "; |D-|=" + D.numeroExemplosNegativo
                 + ")"); //database name
-
+        
         System.out.println("SSDPmais executando...");
         //Rodando SSDP
         long t0 = System.currentTimeMillis(); //Initial time
@@ -220,7 +220,7 @@ public class SSDPmais {
 
         System.out.println("\n### Top-k DPs:");
         Avaliador.imprimirRegras(p, k);
-
+        System.out.println("Average " + tipoAvaliacao + ": " + Avaliador.avaliarMedia(p, k));
         //Informations about top-k DPs:  
         //System.out.println("### Base:" + D.nomeBase + "(|I|=" + D.numeroItens
         //        + "; |A|=" + D.numeroAtributos

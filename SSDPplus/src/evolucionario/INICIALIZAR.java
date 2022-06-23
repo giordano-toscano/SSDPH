@@ -143,8 +143,8 @@ public class INICIALIZAR {
         //População que será retornada        
         Pattern[] P0 = new Pattern[tamanhoPopulacao];
         
-        int populationWithRndItens = (int) (tamanhoPopulacao*0.5); // 0.5
-        int populationsWithPkItens = (int) (tamanhoPopulacao*0.3); // 0.3
+        int populationWithRndItens = (int) (tamanhoPopulacao*0.8); // 0.5
+        int populationsWithPkItens = (int) (tamanhoPopulacao*0.051);// 0.3
         int populationWithRndOrPkItens = tamanhoPopulacao - (populationWithRndItens + populationsWithPkItens);
         
         //Adicionando aleatoriamente com até numeroDimensoes itens

@@ -46,7 +46,7 @@ public class D {
 
     public static String[][] examplesMatrix;
     public static String[][][] partitions;        // an 1D array of 2D arrays
-    public static int numberOfPartitions;
+    public static int numberOfPartitions = 0;
 
     public static ArrayList<HashSet<String>> valoresDistintosAtributos;
 
@@ -237,7 +237,11 @@ public class D {
         D.partitions = new String[2][][];
         D.partitions[0] = D.examplesMatrix;
         //D.partitions[1] = D.randomSampling(samplingRate);
-        D.partitions[1] = D.getSampledMatrix(totalSampleRate, samplingRate);
+        if(samplingRate != -1){
+            D.partitions[1] = D.getSampledMatrix(totalSampleRate, samplingRate); 
+        }else{
+            D.partitions[1] = D.getRandomSampledMatrix(totalSampleRate);
+        }
     }
 
     private static String[][] getSampledMatrix(double totalSampleRate, double positiveSamplingRate) {
@@ -299,6 +303,26 @@ public class D {
         System.out.println("\nNÚMERO DE EXEMPLOS NEGATIVOS NA AMOSTRA: " + j);
         System.out.println("NÚMERO DE EXEMPLOS POSTIVOS NA AMOSTRA: " + k);
         System.out.println("TAMNHO DA AMOSTRA: " + resultExamplesMatrix.length);
+        return resultExamplesMatrix;
+    }
+    
+    private static String[][] getRandomSampledMatrix(double totalSampleRate) {
+
+        int sampleSize = (int) (totalSampleRate * D.examplesNumber);
+
+        ArrayList<Integer> examplesArrayList = new ArrayList<>(D.examplesNumber);
+        for (int i = 0; i < D.examplesMatrix.length; i++) {
+            examplesArrayList.add(i);
+        }
+        int[] examplesIndex = shuffle(examplesArrayList);
+        int k;
+        String[][] resultExamplesMatrix = new String[sampleSize][];
+
+        for (k = 0; k < sampleSize; k++) {
+            resultExamplesMatrix[k] = D.examplesMatrix[examplesIndex[k]];
+        }
+
+        System.out.println("NÚMERO DE EXEMPLOS NA AMOSTRA: " + k);
         return resultExamplesMatrix;
     }
     //-------------------------------------------------------------------------------------------------------------------

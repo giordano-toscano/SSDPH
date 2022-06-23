@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class Const {
     public final static String ALGORITMO_SSDP = "SSDP";
-    public final static String ALGORITMO_SSDPmais = "SSDPplus";
+    public final static String ALGORITMO_SSDPmais = "SSDPmais";
     public final static String ALGORITMO_SSDPmaisS00 = "SSDPplusS00";
     public final static String ALGORITMO_SSDPmaisS10 = "SSDPplusS10";
     public final static String ALGORITMO_SSDPmaisS20 = "SSDPplusS20";
@@ -29,20 +29,24 @@ public class Const {
     
     
     public final static String ALGORITMO_SSDPH = "SSDPH";
-    public final static String ALGORITMO_SSDPHS00 = "SSDPHS00";
-    public final static String ALGORITMO_SSDPHS10 = "SSDPHS10";
-    public final static String ALGORITMO_SSDPHS20 = "SSDPHS20";
-    public final static String ALGORITMO_SSDPHS30 = "SSDPHS30";
-    public final static String ALGORITMO_SSDPHS40 = "SSDPHS40";
-    public final static String ALGORITMO_SSDPHS50 = "SSDPHS50";
-    public final static String ALGORITMO_SSDPHS60 = "SSDPHS60";
-    public final static String ALGORITMO_SSDPHS70 = "SSDPHS70";
-    public final static String ALGORITMO_SSDPHS80 = "SSDPHS80";    
-    public final static String ALGORITMO_SSDPHS90 = "SSDPHS90";
-    public final static String ALGORITMO_SSDPHS100 = "SSDPHS100";
     
-    public final static String ALGORITMO_GulosoDplus = "GulosoDplus";
-    public final static String ALGORITMO_GulosoDplus4D = "GulosoDplus4D";
+    public final static String ALGORITMO_SSDPHp20aD1 = "SSDPHp20aD1";
+    public final static String ALGORITMO_SSDPHp60aD1 = "SSDPHp60aD1";
+    
+    public final static String ALGORITMO_SSDPHp20b50D1 = "SSDPHp20b50D1";
+    public final static String ALGORITMO_SSDPHp60b50D1 = "SSDPHp60b50D1";
+    
+    public final static String ALGORITMO_SSDPHpn5D1 = "SSDPHpn5D1";
+    public final static String ALGORITMO_SSDPHpn10D1 = "SSDPHpn10D1";
+    
+    public final static String ALGORITMO_SSDPHD1 = "SSDPHD1";
+    public final static String ALGORITMO_SSDPHD2 = "SSDPHD2";
+    public final static String ALGORITMO_SSDPHD3 = "SSDPHD3";
+    
+    
+    public final static String ALGORITMO_ED1 = "ED1";
+    public final static String ALGORITMO_ED2 = "ED2";
+    public final static String ALGORITMO_ED3 = "ED3";
     
 //    public final static String ALGORITMO_SSDPmais90Pbest = "SSDPplusS90Pbest";
 //    public final static String ALGORITMO_SSDPmais50Pbest = "SSDPplusS50Pbest";
