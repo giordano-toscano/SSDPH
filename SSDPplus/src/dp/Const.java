@@ -14,7 +14,7 @@ import java.util.Random;
  */
 public class Const {
     public final static String ALGORITMO_SSDP = "SSDP";
-    public final static String ALGORITMO_SSDPmais = "SSDPplus";
+    public final static String ALGORITMO_SSDPmais = "SSDPmais";
     public final static String ALGORITMO_SSDPmaisS00 = "SSDPplusS00";
     public final static String ALGORITMO_SSDPmaisS10 = "SSDPplusS10";
     public final static String ALGORITMO_SSDPmaisS20 = "SSDPplusS20";
@@ -27,8 +27,26 @@ public class Const {
     public final static String ALGORITMO_SSDPmaisS90 = "SSDPplusS90";
     public final static String ALGORITMO_SSDPmaisS100 = "SSDPplusS100";
     
-    public final static String ALGORITMO_GulosoDplus = "GulosoDplus";
-    public final static String ALGORITMO_GulosoDplus4D = "GulosoDplus4D";
+    
+    public final static String ALGORITMO_SSDPH = "SSDPH";
+    
+    public final static String ALGORITMO_SSDPHp20aD1 = "SSDPHp20aD1";
+    public final static String ALGORITMO_SSDPHp60aD1 = "SSDPHp60aD1";
+    
+    public final static String ALGORITMO_SSDPHp20b50D1 = "SSDPHp20b50D1";
+    public final static String ALGORITMO_SSDPHp60b50D1 = "SSDPHp60b50D1";
+    
+    public final static String ALGORITMO_SSDPHpn5D1 = "SSDPHpn5D1";
+    public final static String ALGORITMO_SSDPHpn10D1 = "SSDPHpn10D1";
+    
+    public final static String ALGORITMO_SSDPHD1 = "SSDPHD1";
+    public final static String ALGORITMO_SSDPHD2 = "SSDPHD2";
+    public final static String ALGORITMO_SSDPHD3 = "SSDPHD3";
+    
+    
+    public final static String ALGORITMO_ED1 = "ED1";
+    public final static String ALGORITMO_ED2 = "ED2";
+    public final static String ALGORITMO_ED3 = "ED3";
     
 //    public final static String ALGORITMO_SSDPmais90Pbest = "SSDPplusS90Pbest";
 //    public final static String ALGORITMO_SSDPmais50Pbest = "SSDPplusS50Pbest";
@@ -97,13 +115,13 @@ public class Const {
 //    public final static String CAMINHO_DICIONARIOS = Const.CAMINHO + "dicionarios/";
 //    public final static String CAMINHO_INDICE = Const.CAMINHO + "indice.txt";
     
-    public final static String CAMINHO_BASES = "../DP4/pastas/bases/";
-    public final static String CAMINHO_BASES_EDITADAS = "../DP4/pastas/bases_editadas/";
-    public final static String CAMINHO_RESULTADOS = "../DP4/pastas/resultados/";
-    public final static String CAMINHO_RESULTADOS_OBJ = "../DP4/pastas/resultados_obj/";  
-    public final static String CAMINHO_RELATORIO = "../DP4/pastas/relatorios/";
-    public final static String CAMINHO_DICIONARIOS = "../DP4/pastas/dicionarios/";
-    public final static String CAMINHO_INDICE = "../DP4/pastas/indice.txt";
+    public final static String CAMINHO_BASES = "../SSDPplus/pastas/bases/";
+    public final static String CAMINHO_BASES_EDITADAS = "../SSDPplus/pastas/bases_editadas/";
+    public final static String CAMINHO_RESULTADOS = "../SSDPplus/pastas/resultados/";
+    public final static String CAMINHO_RESULTADOS_OBJ = "../SSDPplus/pastas/resultados_obj/";  
+    public final static String CAMINHO_RELATORIO = "../SSDPplus/pastas/relatorios/";
+    public final static String CAMINHO_DICIONARIOS = "../SSDPplus/pastas/dicionarios/";
+    public final static String CAMINHO_INDICE = "../SSDPplus/pastas/indice.txt";
        
     public static Random random;   
     public final static long[] SEEDS = {179424673, 125164703, 132011827, 124987441, 123979721 , 119777719, 117705823 , 112131119, 108626351, 107980007, 

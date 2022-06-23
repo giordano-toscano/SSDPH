@@ -322,7 +322,7 @@ public class SELECAO {
      */
     public static int salvandoRelevantesDPmais(Pattern[] Pk, Pattern[] PAsterisco, double similaridadeLimite){
         int novosk = 0;
-        for( int i = 0; i < PAsterisco.length && (PAsterisco[i].getQualidade() > Pk[Pk.length-1].getQualidade()); i++){
+        for( int i = 0; i < PAsterisco.length && PAsterisco[i] != null && (PAsterisco[i].getQualidade() > Pk[Pk.length-1].getQualidade()); i++){
             Pattern p_PAsterisco = PAsterisco[i];
             //Três possibilidades
             //(1) igual a alguma DP de Pk: descartar

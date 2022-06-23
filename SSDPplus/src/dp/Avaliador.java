@@ -480,7 +480,7 @@ public class Avaliador {
         HashSet<Integer> itens;
         int TP = 0, FP = 0;
         Pattern Pi;
-        for(int i = 0; i < Pk.length; i++){
+        for(int i = 0; i < Pk.length && Pk[i] != null; i++){
             Pi = Pk[i];
             itens = Pi.getItens();
             Pi.setVrP(Avaliador.vetorResultantePositivoAND(itens));

@@ -522,7 +522,29 @@ public class DPinfo {
         return media;
     }
     
+    public static double metricaMedia(Resultado[] R, Base b, String tipoMetrica){
+        int i = 0;
+        double total = 0.0;
+                
+        if(tipoMetrica.equals(Const.METRICA_TIME)){
+            for(; i < R.length; i++){
+                total += R[i].getTempoExecucao();
+            }
+        }else if(tipoMetrica.equals(Const.METRICA_NUMERO_TESTES)){
+            for(; i < R.length; i++){
+                total += R[i].getNumeroTestes();
+            }
+        }else{
+            for(; i < R.length; i++){
+                total += DPinfo.metricaMedia(R[i].getDPs(), b, tipoMetrica);
+            }
+        }
+                       
+        double media = total/(double)i;
         
+        return media;
+    }
+    
 //    public static double metricaMedia(Simulacao[] simulacoes, String tipoMetrica, BasesArrayList bases){
 //        int i = 0;
 //        double total = 0.0;
@@ -594,7 +616,50 @@ public class DPinfo {
         return -1;
     }
     
-
+//    public static String toString(Simulacao s){
+//        String str = "B = " + s.getNomeBase() + ", Ag = " + s.getAlgoritmo() + "\n";        
+//        
+//        //Adicionando todas as DPs da simulação: número de repetições * número de k
+//        ArrayList<Pattern> P_all = new ArrayList<Pattern>();
+//        for(int i = 0; i < s.getResultados().length; i++){
+//            Pattern[] p_Resultado = s.getResultados()[i].getDPs();
+//            for(int j = 0; j < p_Resultado.length; j++){
+//                P_all.add(p_Resultado[j]);
+//            }
+//        }
+//        
+//        Pattern[] p_dist = DPinfo.patternDistintos(P_all);
+//        int[] frequencia = DPinfo.frequenciaPatterns(P_all, p_dist);
+//        
+//        for(int i = 0; i < p_dist.length; i++){
+//            str += i + "_";
+//            Pattern p = p_dist[i];
+//            HashSet<Integer> itens = p.getItens();
+//            if(itens.size() == 0){
+//                str += "{}";
+//            }
+//            else{
+//                Iterator iterator = itens.iterator();
+//                str += "{";
+//                while(iterator.hasNext()){
+//                    int item = (int)iterator.next();
+//                    //str += item + "(" + DPinfo.getPosicaoRanking(item, s.getRankingDP1()) + "),";
+//                    str += DPinfo.getPosicaoRanking(item, s.getRankingDP1()) + ",";
+//                }                
+//                str += "}";
+//            }    
+//            str += "(" + frequencia[i] + ") -> TP=" + p.getTP() + "/FP=" + p.getFP() + "\n";
+//        }
+//        
+//        return str;
+//    }
+    
+    public static void imprimirDPsimulacoes(ArrayList<Simulacao> simulacoes){
+        for(int i = 0; i < simulacoes.size(); i++){
+            //System.out.println( DPinfo.toString(simulacoes.get(i)) );
+        }
+    }
+    
     public static void imprimirItens(Pattern p){
         HashSet<Integer> itens = p.getItens();
         Iterator iterator = itens.iterator();
