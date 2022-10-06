@@ -36,7 +36,7 @@ public class SSDPH {
             if (D.numberOfPartitions > 0) {
                 D.switchPartition(r);
             }
-            Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, -1, maxDimensao);
+            Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, maxTimeSegundos, maxDimensao);
             Pattern[] P;
 
             //Inicializa Pk com indivíduos vazios
@@ -79,17 +79,18 @@ public class SSDPH {
             Pattern[] PAsterisco = null;
 
             int tamanhoPopulacao = P.length;
-
+            int repetitionsCount;
             //System.out.println("Buscas...");
             for (int numeroReinicializacoes = 0; numeroReinicializacoes < 3; numeroReinicializacoes++) {//Controle número de reinicializações
                 //System.out.println("Reinicialização: " + numeroReinicializacoes);
                 if (numeroReinicializacoes > 0) {
                     P = INICIALIZAR.aleatorio1_D_Pk(tipoAvaliacao, tamanhoPopulacao, Pk);
+                    //repetitionsCount = 0;
                 }
-
+                repetitionsCount = 0;
                 double mutationTax = 0.4; //Mutação inicia em 0.4. Crossover é sempre 1-mutationTax.
                 //System.out.println("============================");
-                while (numeroGeracoesSemMelhoraPk < 3) {
+                while (numeroGeracoesSemMelhoraPk < 3 || repetitionsCount < 30) {
 
                     if (indiceGeracoes == 1) {
                         Pnovo = CRUZAMENTO.ANDduasPopulacoes(P, P, tipoAvaliacao);
@@ -117,8 +118,10 @@ public class SSDPH {
                         numeroGeracoesSemMelhoraPk++;
 
                     } else {
+                        repetitionsCount = 30;
                         numeroGeracoesSemMelhoraPk = 0;
-                    }                      
+                    }    
+                    repetitionsCount++;
                 }
 
                 numeroGeracoesSemMelhoraPk = 0;
@@ -128,7 +131,7 @@ public class SSDPH {
             if (D.numberOfPartitions > 0) {
                 Avaliador.evaluateWholeBase(Pk, tipoAvaliacao); 
                 pList[j++] = Pk;
-                partitionsInfo += printInfo(j);
+                //partitionsInfo += printInfo(j);
             }
         }
         //return Pbest;
@@ -146,7 +149,7 @@ public class SSDPH {
                     }
                 }
             }
-            System.out.println(partitionsInfo);
+            //System.out.println(partitionsInfo);
             return pBest;
             
         } else {
@@ -316,11 +319,7 @@ public class SSDPH {
     }
 
     public static String printInfo(int j) {
-        return "\n### Partition " + (j) + ": " + D.baseName + "(|I|=" + D.numeroItens
-                + "; |A|=" + D.attributesNumber
-                + "; |D+|=" + D.numeroExemplosPositivo
-                + "; |D-|=" + D.numeroExemplosNegativo
-                + ")"; //database name
+        return "[Partition " + (j) + "]";
     }
 
 }

@@ -37,7 +37,7 @@ public class GulosoD {
         ///////////////////////////////////////////////////////////
         // D1
         ///////////////////////////////////////////////////////////
-        System.out.println("### Dimensão 1:");
+        System.out.print("### Dimensão 1...");
         for(int i = 0; i < D.numeroItensUtilizados; i++){            
             //Gerando DPs e atribuindo a Pk (critério DP+)
             HashSet<Integer> itens = new HashSet<>();
@@ -62,7 +62,7 @@ public class GulosoD {
         // D2
         ///////////////////////////////////////////////////////////
         if(maxDimensao >= 2){
-            System.out.println("### Dimensão 2:");
+            System.out.print("### Dimensão 2...");
             for(int i1 = 0; i1 < D.numeroItensUtilizados; i1++){            
                 for(int i2 = i1+1; i2 < D.numeroItensUtilizados; i2++){
                     //Gerando DPs e atribuindo a Pk (critério DP+)
@@ -100,7 +100,7 @@ public class GulosoD {
         // D3
         ///////////////////////////////////////////////////////////
         if(maxDimensao >= 3){
-            System.out.println("### Dimensão 3:");
+            System.out.print("### Dimensão 3...");
             for(int i1 = 0; i1 < D.numeroItensUtilizados; i1++){            
                 for(int i2 = i1 + 1; i2 < D.numeroItensUtilizados; i2++){
                     for(int i3 = i2 + 1; i3 < D.numeroItensUtilizados; i3++){
