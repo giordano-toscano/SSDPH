@@ -140,10 +140,13 @@ public class INICIALIZAR {
             numeroDimensoes = 2;
         }
         
+        
         //População que será retornada        
         Pattern[] P0 = new Pattern[tamanhoPopulacao];
-        
         int populationWithRndItens = (int) (tamanhoPopulacao*0.8); // 0.5
+        if(numeroDimensoes >= 3){
+            populationWithRndItens = (int) (tamanhoPopulacao*0.82); // 0.5
+        }
         int populationsWithPkItens = (int) (tamanhoPopulacao*0.051);// 0.3
         int populationWithRndOrPkItens = tamanhoPopulacao - (populationWithRndItens + populationsWithPkItens);
         

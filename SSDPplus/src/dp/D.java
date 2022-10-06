@@ -377,12 +377,10 @@ public class D {
         //Carrega a partir do nosso formato em D
         D.generateItens();
 
-        if (D.numberOfPartitions > 0) {
-            D.switchPartition(1);
-        } else {
-            int[][] dadosInt = generateExamplesIntMatrix();
-            D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
-        }
+        
+        int[][] dadosInt = generateExamplesIntMatrix();
+        D.generateDpDn(dadosInt); //Gera Bases de exemplos positivos (D+) e negativos (D-)
+        
 
         //Filtro determina os itens que serão considerados pelos algoritmos
         //Por padrão todos são aceitos
