@@ -115,7 +115,7 @@ public class Const {
 //    public final static String CAMINHO_DICIONARIOS = Const.CAMINHO + "dicionarios/";
 //    public final static String CAMINHO_INDICE = Const.CAMINHO + "indice.txt";
     
-    public final static String CAMINHO_BASES = "../SSDPplus/pastas/bases/";
+    public final static String CAMINHO_BASES = "../../bases/";
     public final static String CAMINHO_BASES_EDITADAS = "../SSDPplus/pastas/bases_editadas/";
     public final static String CAMINHO_RESULTADOS = "../SSDPplus/pastas/resultados/";
     public final static String CAMINHO_RESULTADOS_OBJ = "../SSDPplus/pastas/resultados_obj/";  

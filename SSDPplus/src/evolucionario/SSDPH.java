@@ -12,6 +12,8 @@ import dp.Pattern;
 import exatos.GulosoD;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 //import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
@@ -26,27 +28,27 @@ public class SSDPH {
     public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos, int maxDimensao) throws FileNotFoundException {
         long t0 = System.currentTimeMillis(); //Initial time
         int j = 0;
+        int kOriginal = k;
+        k = 20;
         Pattern[][] pList = new Pattern[D.numberOfPartitions][];
         //Pattern[][] pCacheList = new Pattern[D.numberOfPartitions*k*Pattern.maxSimulares][];
         Pattern[] pBest;
         Pattern[] pBestSimilars;
         String partitionsInfo = "";
-        Pattern[] Pk = null;
+        Pattern[] Pk = new Pattern[k];
+        Pattern[] P = null;
         for(int r = 1; r <= D.numberOfPartitions || r == 1; r++) {
             if (D.numberOfPartitions > 0) {
                 D.switchPartition(r);
             }
-            Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, maxTimeSegundos, maxDimensao);
-            Pattern[] P;
+           //Inicializa Pk com indivíduos vazios
+            for (int i = 0; i < Pk.length; i++) {
+                Pk[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
+            }
 
-            //Inicializa Pk com indivíduos vazios
-            /*for(int i = 0; i < Pk.length;i++){
-            Pk[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
-        }*/
             //System.out.println("Inicializando população...");
             //Inicializa garantindo que P maior que Pk sempre! em bases pequenas isso nem sempre ocorre
-            //Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
-            Pattern[] Paux = INICIALIZAR.aleatorio1_D_Pk2(tipoAvaliacao, D.numeroItensUtilizados, maxDimensao + 1, Pk);
+            Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
             if (Paux.length < k) {
                 P = new Pattern[k];
                 for (int i = 0; i < k; i++) {
@@ -65,14 +67,8 @@ public class SSDPH {
             //System.arraycopy(P, 0, Pk, 0, k); //Inicializa Pk com os melhores indivíduos da população inicial
             SELECAO.salvandoRelevantesDPmais(Pk, P, similaridade);
 
-//        System.out.println("P0");        
-//        System.out.println("Qualidade média k/P: " + Avaliador.avaliarMedia(Pk,k) + "/" + Avaliador.avaliarMedia(P,P.length));
-//        System.out.println("Dimensão média k/P: " + Avaliador.avaliarMediaDimensoes(Pk,k) + "/" + Avaliador.avaliarMediaDimensoes(P,P.length));        
-//        System.out.println("Cobertura +: " + Avaliador.coberturaPositivo(Pk,k));       
-//        Avaliador.imprimirDimensaoQuantidade(Pk, k, 15);
-//        Avaliador.imprimirDimensaoQuantidade(P, P.length, 15);
             int numeroGeracoesSemMelhoraPk = 0;
-            int indiceGeracoes = maxDimensao;
+            int indiceGeracoes = 1;
 
             //Genetic Algorithmn loop
             Pattern[] Pnovo = null;
@@ -153,6 +149,37 @@ public class SSDPH {
             return pBest;
             
         } else {
+            
+            HashSet<Integer> itensPk = new HashSet<>();
+            for(int n = 0; n < Pk.length; n++){
+                itensPk.addAll(Pk[n].getItens());
+                Pattern[] similaresPk = Pk[n].getSimilares();
+                if(similaresPk != null){
+                    for(int m = 0; m < similaresPk.length; m++){
+                        itensPk.addAll(similaresPk[m].getItens());
+
+                    }
+                }
+            }
+            int[] itensPkArray = new int[itensPk.size()];
+
+            Iterator iterator = itensPk.iterator();
+            int n = 0;        
+            while(iterator.hasNext()){
+                itensPkArray[n++] = (int)iterator.next();
+            }
+            
+            int maiorNumeroItens = Integer.MIN_VALUE;
+            for(int c = 0; c < Pk.length; c++){
+                if(Pk[c].getItens().size() > maiorNumeroItens){
+                    maiorNumeroItens = Pk[c].getItens().size();
+                }
+            }
+            D.itensUtilizados = itensPkArray;
+            D.numeroItensUtilizados = itensPkArray.length;
+            Pattern[] PkExhaustive = GulosoD.run(kOriginal, D.numeroItensUtilizados, tipoAvaliacao, similaridade, 60*60*1, maiorNumeroItens);
+            //SELECAO.salvandoRelevantesDPmais(PkExhaustive, Pk, similaridade);
+            Pk = PkExhaustive;
             return Pk;
         }
     }

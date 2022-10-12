@@ -285,13 +285,13 @@ public class SimulacaoGeral {
         //int[] K = {1,5,10,20};
         //int[] K = {5,10};
         //int numeroRepeticoes = 1;
-        int numeroRepeticoes = 5; // era 30
+        int numeroRepeticoes = 10; // era 30
         double tempoMaximoSegundosAlgoritmos = -1;    // 60*60*1; //max 1h
         String[] algoritmos = {//Const.ALGORITMO_AG,
 
             //Const.ALGORITMO_ED1,
-            //Const.ALGORITMO_SSDPmais,
-            //Const.ALGORITMO_SSDPHD1,
+            Const.ALGORITMO_SSDPmais,
+            Const.ALGORITMO_SSDPHD1,
             /*Const.ALGORITMO_SSDPHp20aD1,
             Const.ALGORITMO_SSDPHp60aD1,
             Const.ALGORITMO_SSDPHp20b50D1,
@@ -299,14 +299,14 @@ public class SimulacaoGeral {
             Const.ALGORITMO_SSDPHpn5D1,*/
             //Const.ALGORITMO_SSDPHpn10D1,
             //Const.ALGORITMO_ED2,
-            Const.ALGORITMO_SSDPHD2,
+            //Const.ALGORITMO_SSDPHD2,
             /*Const.ALGORITMO_ED3,
             Const.ALGORITMO_SSDPHD3,*/
         };
 
         SimulacaoGeral sg = new SimulacaoGeral(new File(Const.CAMINHO_INDICE));
-        String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_WRACC_NORMALIZED;
-        //String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_QG;
+        //String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_WRACC_NORMALIZED;
+        String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_QG;
 
         sg.run(K, numeroRepeticoes, algoritmos, ",", tipoAvaliacao, tempoMaximoSegundosAlgoritmos);
     }
