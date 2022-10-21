@@ -42,7 +42,7 @@ public class Const {
     public final static String ALGORITMO_SSDPHD1 = "SSDPHD1";
     public final static String ALGORITMO_SSDPHD2 = "SSDPHD2";
     public final static String ALGORITMO_SSDPHD3 = "SSDPHD3";
-    
+    public final static String ALGORITMO_SSDPHD4 = "SSDPHD4";
     
     public final static String ALGORITMO_ED1 = "ED1";
     public final static String ALGORITMO_ED2 = "ED2";

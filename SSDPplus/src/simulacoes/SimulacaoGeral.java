@@ -208,6 +208,9 @@ public class SimulacaoGeral {
                             case Const.ALGORITMO_SSDPHD3:
                                 p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
                                 break;
+                            case Const.ALGORITMO_SSDPHD4:
+                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
+                                break;
                             case Const.ALGORITMO_ED1:
                                 p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
@@ -290,8 +293,8 @@ public class SimulacaoGeral {
         String[] algoritmos = {//Const.ALGORITMO_AG,
 
             //Const.ALGORITMO_ED1,
-            Const.ALGORITMO_SSDPmais,
-            Const.ALGORITMO_SSDPHD1,
+            //Const.ALGORITMO_SSDPmais,
+            Const.ALGORITMO_SSDPHD4,
             /*Const.ALGORITMO_SSDPHp20aD1,
             Const.ALGORITMO_SSDPHp60aD1,
             Const.ALGORITMO_SSDPHp20b50D1,

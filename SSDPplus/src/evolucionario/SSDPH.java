@@ -29,7 +29,7 @@ public class SSDPH {
         long t0 = System.currentTimeMillis(); //Initial time
         int j = 0;
         int kOriginal = k;
-        k = 20;
+        k = 30;
         Pattern[][] pList = new Pattern[D.numberOfPartitions][];
         //Pattern[][] pCacheList = new Pattern[D.numberOfPartitions*k*Pattern.maxSimulares][];
         Pattern[] pBest;
@@ -169,16 +169,33 @@ public class SSDPH {
                 itensPkArray[n++] = (int)iterator.next();
             }
             
-            int maiorNumeroItens = Integer.MIN_VALUE;
+            /*int maiorNumeroItens = Integer.MIN_VALUE;
             for(int c = 0; c < Pk.length; c++){
                 if(Pk[c].getItens().size() > maiorNumeroItens){
                     maiorNumeroItens = Pk[c].getItens().size();
                 }
+            }*/
+            Pattern[] PkBigger = new Pattern[kOriginal]; //new Pattern[kOriginal*Pattern.maxSimulares];
+            int i = 0;
+            for(int c = 0; c < Pk.length; c++){
+                if(Pk[c].getItens().size() > maxDimensao){
+                    PkBigger[i++] = Pk[c];
+                }
+                /*Pattern[] similaresPk = Pk[c].getSimilares();
+                if(similaresPk != null){
+                    for(int m = 0; m < similaresPk.length; m++){
+                        if(similaresPk[m].getItens().size() >=maxDimensao){
+                            PkBigger[i++] = similaresPk[m];
+                        }
+
+                    }
+                }*/
             }
             D.itensUtilizados = itensPkArray;
             D.numeroItensUtilizados = itensPkArray.length;
-            Pattern[] PkExhaustive = GulosoD.run(kOriginal, D.numeroItensUtilizados, tipoAvaliacao, similaridade, 60*60*1, maiorNumeroItens);
-            //SELECAO.salvandoRelevantesDPmais(PkExhaustive, Pk, similaridade);
+            
+            Pattern[] PkExhaustive = GulosoD.run(kOriginal, D.numeroItensUtilizados, tipoAvaliacao, similaridade, maxTimeSegundos, maxDimensao);
+            SELECAO.salvandoRelevantesDPmais(PkExhaustive, PkBigger, similaridade);
             Pk = PkExhaustive;
             return Pk;
         }

@@ -129,7 +129,7 @@ public class GulosoD {
         }else{
             return GulosoD.finalizarBusca(Pk, P, indiceP, tipoAvaliacao, similaridade);
         }
-              
+           
         //Se Pk não evoluiu de uma dimensão para outra, parar a busca.
         if(Pk[Pk.length-1].getQualidade() <= qualidadePiorIndividuoTopK){
             return Pk;
