@@ -9,11 +9,11 @@ import dp.Avaliador;
 import dp.Const;
 import dp.D;
 import dp.Pattern;
-import exatos.GulosoD;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
+import sd.SD;
 //import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
@@ -175,13 +175,14 @@ public class SSDPH {
                     maiorNumeroItens = Pk[c].getItens().size();
                 }
             }*/
+            /*
             Pattern[] PkBigger = new Pattern[kOriginal]; //new Pattern[kOriginal*Pattern.maxSimulares];
             int i = 0;
             for(int c = 0; c < Pk.length; c++){
                 if(Pk[c].getItens().size() > maxDimensao){
                     PkBigger[i++] = Pk[c];
                 }
-                /*Pattern[] similaresPk = Pk[c].getSimilares();
+                Pattern[] similaresPk = Pk[c].getSimilares();
                 if(similaresPk != null){
                     for(int m = 0; m < similaresPk.length; m++){
                         if(similaresPk[m].getItens().size() >=maxDimensao){
@@ -189,13 +190,20 @@ public class SSDPH {
                         }
 
                     }
-                }*/
+                }
             }
+            */
+            int[] itensUtilizadosOriginal = D.itensUtilizados;
+            int numeroItensUtilizadosOriginal = D.numeroItensUtilizados;
             D.itensUtilizados = itensPkArray;
             D.numeroItensUtilizados = itensPkArray.length;
             
-            Pattern[] PkExhaustive = GulosoD.run(kOriginal, D.numeroItensUtilizados, tipoAvaliacao, similaridade, maxTimeSegundos, maxDimensao);
-            SELECAO.salvandoRelevantesDPmais(PkExhaustive, PkBigger, similaridade);
+            Pattern[] PkExhaustive = SD.run(0, kOriginal, tipoAvaliacao, kOriginal, maxTimeSegundos);
+            //SELECAO.salvandoRelevantesDPmais(PkExhaustive, PkBigger, similaridade);
+            
+            D.itensUtilizados = itensUtilizadosOriginal;
+            D.numeroItensUtilizados = numeroItensUtilizadosOriginal;
+            
             Pk = PkExhaustive;
             return Pk;
         }
