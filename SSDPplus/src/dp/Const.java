@@ -39,10 +39,10 @@ public class Const {
     public final static String ALGORITMO_SSDPHpn5D1 = "SSDPHpn5D1";
     public final static String ALGORITMO_SSDPHpn10D1 = "SSDPHpn10D1";
     
-    public final static String ALGORITMO_SSDPHD1 = "SSDPHD1";
-    public final static String ALGORITMO_SSDPHD2 = "SSDPHD2";
-    public final static String ALGORITMO_SSDPHD3 = "SSDPHD3";
-    public final static String ALGORITMO_SSDPHD4 = "SSDPHD4";
+    public final static String ALGORITMO_eSSDPHD1 = "eSSDPHD1";
+    public final static String ALGORITMO_eSSDPHD2 = "eSSDPHD2";
+    public final static String ALGORITMO_SSDPHeD4 = "SSDPHeD4";
+    public final static String ALGORITMO_SSDPHsd = "SSDPHsd";
     
     public final static String ALGORITMO_ED1 = "ED1";
     public final static String ALGORITMO_ED2 = "ED2";

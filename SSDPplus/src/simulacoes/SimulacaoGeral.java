@@ -11,7 +11,8 @@ import dp.D;
 import dp.Pattern;
 //import dp.RSS;
 import evolucionario.INICIALIZAR;
-import evolucionario.SSDPH;
+import evolucionario.SSDPHe;
+import evolucionario.SSDPHsd;
 import evolucionario.SSDPmais;
 //import evolucionario.*;
 import exatos.GulosoD;
@@ -199,17 +200,17 @@ public class SimulacaoGeral {
                             case Const.ALGORITMO_SSDPmais:
                                 p = SSDPmais.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos);
                                 break;
-                            case Const.ALGORITMO_SSDPHD1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                            case Const.ALGORITMO_eSSDPHD1:
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
-                            case Const.ALGORITMO_SSDPHD2:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
+                            case Const.ALGORITMO_eSSDPHD2:
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
                                 break;
-                            case Const.ALGORITMO_SSDPHD3:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
+                            case Const.ALGORITMO_SSDPHeD4:
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
                                 break;
-                            case Const.ALGORITMO_SSDPHD4:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
+                            case Const.ALGORITMO_SSDPHsd:
+                                p = SSDPHsd.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
                                 break;
                             case Const.ALGORITMO_ED1:
                                 p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
@@ -221,22 +222,22 @@ public class SimulacaoGeral {
                                 p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
                                 break;
                             case Const.ALGORITMO_SSDPHp20aD1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp60aD1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp20b50D1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp60b50D1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHpn5D1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHpn10D1:
-                                p = SSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                         }
 
@@ -294,7 +295,7 @@ public class SimulacaoGeral {
 
             //Const.ALGORITMO_ED1,
             //Const.ALGORITMO_SSDPmais,
-            Const.ALGORITMO_SSDPHD4,
+            Const.ALGORITMO_SSDPHeD4,
             /*Const.ALGORITMO_SSDPHp20aD1,
             Const.ALGORITMO_SSDPHp60aD1,
             Const.ALGORITMO_SSDPHp20b50D1,

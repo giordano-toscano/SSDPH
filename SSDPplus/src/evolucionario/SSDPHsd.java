@@ -23,7 +23,7 @@ import simulacoes.DPinfo;
  *
  * @author TARCISIO
  */
-public class SSDPH {
+public class SSDPHsd {
 
     public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos, int maxDimensao) throws FileNotFoundException {
         long t0 = System.currentTimeMillis(); //Initial time
@@ -330,7 +330,7 @@ public class SSDPH {
         //Rodando SSDP
         long t0 = System.currentTimeMillis(); //Initial time
         //Pattern[] p = SSDPH.run(k, tipoAvaliacao, similaridade);
-        pk = SSDPH.run(k, tipoAvaliacao, similaridade, maxTimeSecond, 1);
+        pk = SSDPHsd.run(k, tipoAvaliacao, similaridade, maxTimeSecond, 1);
         
         double tempo = (System.currentTimeMillis() - t0) / 1000.0; //time
         
