@@ -39,10 +39,10 @@ public class Const {
     public final static String ALGORITMO_SSDPHpn5D1 = "SSDPHpn5D1";
     public final static String ALGORITMO_SSDPHpn10D1 = "SSDPHpn10D1";
     
-    public final static String ALGORITMO_SSDPHD1 = "SSDPHD1";
-    public final static String ALGORITMO_SSDPHD2 = "SSDPHD2";
-    public final static String ALGORITMO_SSDPHD3 = "SSDPHD3";
-    
+    public final static String ALGORITMO_eSSDPHD1 = "eSSDPHD1";
+    public final static String ALGORITMO_eSSDPHD2 = "eSSDPHD2";
+    public final static String ALGORITMO_SSDPHeD4 = "SSDPHeD4";
+    public final static String ALGORITMO_SSDPHsd = "SSDPHsd";
     
     public final static String ALGORITMO_ED1 = "ED1";
     public final static String ALGORITMO_ED2 = "ED2";
@@ -115,7 +115,7 @@ public class Const {
 //    public final static String CAMINHO_DICIONARIOS = Const.CAMINHO + "dicionarios/";
 //    public final static String CAMINHO_INDICE = Const.CAMINHO + "indice.txt";
     
-    public final static String CAMINHO_BASES = "../SSDPplus/pastas/bases/";
+    public final static String CAMINHO_BASES = "../../bases/";
     public final static String CAMINHO_BASES_EDITADAS = "../SSDPplus/pastas/bases_editadas/";
     public final static String CAMINHO_RESULTADOS = "../SSDPplus/pastas/resultados/";
     public final static String CAMINHO_RESULTADOS_OBJ = "../SSDPplus/pastas/resultados_obj/";  
