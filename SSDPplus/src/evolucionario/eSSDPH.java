@@ -9,11 +9,9 @@ import dp.Avaliador;
 import dp.Const;
 import dp.D;
 import dp.Pattern;
+import exatos.GulosoD;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import sd.SD;
 //import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
@@ -23,32 +21,32 @@ import simulacoes.DPinfo;
  *
  * @author TARCISIO
  */
-public class SSDPHsd {
+public class eSSDPH {
 
-    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos) throws FileNotFoundException {
+    public static Pattern[] run(int k, String tipoAvaliacao, double similaridade, double maxTimeSegundos, int maxDimensao) throws FileNotFoundException {
         long t0 = System.currentTimeMillis(); //Initial time
         int j = 0;
-        int kOriginal = k;
-        k = 30;
         Pattern[][] pList = new Pattern[D.numberOfPartitions][];
         //Pattern[][] pCacheList = new Pattern[D.numberOfPartitions*k*Pattern.maxSimulares][];
         Pattern[] pBest;
         Pattern[] pBestSimilars;
         String partitionsInfo = "";
-        Pattern[] Pk = new Pattern[k];
-        Pattern[] P = null;
+        Pattern[] Pk = null;
         for(int r = 1; r <= D.numberOfPartitions || r == 1; r++) {
             if (D.numberOfPartitions > 0) {
                 D.switchPartition(r);
             }
-           //Inicializa Pk com indivíduos vazios
-            for (int i = 0; i < Pk.length; i++) {
-                Pk[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
-            }
+            Pk = GulosoD.run(k, D.numeroItensUtilizados, tipoAvaliacao, similaridade, maxTimeSegundos, maxDimensao);
+            Pattern[] P;
 
+            //Inicializa Pk com indivíduos vazios
+            /*for(int i = 0; i < Pk.length;i++){
+            Pk[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
+        }*/
             //System.out.println("Inicializando população...");
             //Inicializa garantindo que P maior que Pk sempre! em bases pequenas isso nem sempre ocorre
-            Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
+            //Pattern[] Paux = INICIALIZAR.D1(tipoAvaliacao);//P recebe população inicial
+            Pattern[] Paux = INICIALIZAR.aleatorio1_D_Pk2(tipoAvaliacao, D.numeroItensUtilizados, maxDimensao + 1, Pk);
             if (Paux.length < k) {
                 P = new Pattern[k];
                 for (int i = 0; i < k; i++) {
@@ -67,8 +65,14 @@ public class SSDPHsd {
             //System.arraycopy(P, 0, Pk, 0, k); //Inicializa Pk com os melhores indivíduos da população inicial
             SELECAO.salvandoRelevantesDPmais(Pk, P, similaridade);
 
+//        System.out.println("P0");        
+//        System.out.println("Qualidade média k/P: " + Avaliador.avaliarMedia(Pk,k) + "/" + Avaliador.avaliarMedia(P,P.length));
+//        System.out.println("Dimensão média k/P: " + Avaliador.avaliarMediaDimensoes(Pk,k) + "/" + Avaliador.avaliarMediaDimensoes(P,P.length));        
+//        System.out.println("Cobertura +: " + Avaliador.coberturaPositivo(Pk,k));       
+//        Avaliador.imprimirDimensaoQuantidade(Pk, k, 15);
+//        Avaliador.imprimirDimensaoQuantidade(P, P.length, 15);
             int numeroGeracoesSemMelhoraPk = 0;
-            int indiceGeracoes = 1;
+            int indiceGeracoes = maxDimensao;
 
             //Genetic Algorithmn loop
             Pattern[] Pnovo = null;
@@ -149,62 +153,6 @@ public class SSDPHsd {
             return pBest;
             
         } else {
-            
-            HashSet<Integer> itensPk = new HashSet<>();
-            for(int n = 0; n < Pk.length; n++){
-                itensPk.addAll(Pk[n].getItens());
-                Pattern[] similaresPk = Pk[n].getSimilares();
-                if(similaresPk != null){
-                    for(int m = 0; m < similaresPk.length; m++){
-                        itensPk.addAll(similaresPk[m].getItens());
-
-                    }
-                }
-            }
-            int[] itensPkArray = new int[itensPk.size()];
-
-            Iterator iterator = itensPk.iterator();
-            int n = 0;        
-            while(iterator.hasNext()){
-                itensPkArray[n++] = (int)iterator.next();
-            }
-            
-            /*int maiorNumeroItens = Integer.MIN_VALUE;
-            for(int c = 0; c < Pk.length; c++){
-                if(Pk[c].getItens().size() > maiorNumeroItens){
-                    maiorNumeroItens = Pk[c].getItens().size();
-                }
-            }*/
-            /*
-            Pattern[] PkBigger = new Pattern[kOriginal]; //new Pattern[kOriginal*Pattern.maxSimulares];
-            int i = 0;
-            for(int c = 0; c < Pk.length; c++){
-                if(Pk[c].getItens().size() > maxDimensao){
-                    PkBigger[i++] = Pk[c];
-                }
-                Pattern[] similaresPk = Pk[c].getSimilares();
-                if(similaresPk != null){
-                    for(int m = 0; m < similaresPk.length; m++){
-                        if(similaresPk[m].getItens().size() >=maxDimensao){
-                            PkBigger[i++] = similaresPk[m];
-                        }
-
-                    }
-                }
-            }
-            */
-            int[] itensUtilizadosOriginal = D.itensUtilizados;
-            int numeroItensUtilizadosOriginal = D.numeroItensUtilizados;
-            D.itensUtilizados = itensPkArray;
-            D.numeroItensUtilizados = itensPkArray.length;
-            
-            Pattern[] PkExhaustive = SD.run(0, kOriginal, tipoAvaliacao, kOriginal, maxTimeSegundos, Pk);
-            //SELECAO.salvandoRelevantesDPmais(PkExhaustive, PkBigger, similaridade);
-            
-            D.itensUtilizados = itensUtilizadosOriginal;
-            D.numeroItensUtilizados = numeroItensUtilizadosOriginal;
-            
-            Pk = PkExhaustive;
             return Pk;
         }
     }
@@ -330,7 +278,7 @@ public class SSDPHsd {
         //Rodando SSDP
         long t0 = System.currentTimeMillis(); //Initial time
         //Pattern[] p = SSDPH.run(k, tipoAvaliacao, similaridade);
-        pk = SSDPHsd.run(k, tipoAvaliacao, similaridade, maxTimeSecond);
+        pk = eSSDPH.run(k, tipoAvaliacao, similaridade, maxTimeSecond, 1);
         
         double tempo = (System.currentTimeMillis() - t0) / 1000.0; //time
         

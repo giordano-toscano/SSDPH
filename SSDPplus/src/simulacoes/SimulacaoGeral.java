@@ -14,6 +14,7 @@ import evolucionario.INICIALIZAR;
 import evolucionario.SSDPHe;
 import evolucionario.SSDPHsd;
 import evolucionario.SSDPmais;
+import evolucionario.eSSDPH;
 //import evolucionario.*;
 import exatos.GulosoD;
 import java.io.BufferedWriter;
@@ -201,16 +202,16 @@ public class SimulacaoGeral {
                                 p = SSDPmais.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos);
                                 break;
                             case Const.ALGORITMO_eSSDPHD1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_eSSDPHD2:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 2);
                                 break;
                             case Const.ALGORITMO_SSDPHeD4:
                                 p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
                                 break;
                             case Const.ALGORITMO_SSDPHsd:
-                                p = SSDPHsd.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 4);
+                                p = SSDPHsd.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos);
                                 break;
                             case Const.ALGORITMO_ED1:
                                 p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
@@ -222,22 +223,22 @@ public class SimulacaoGeral {
                                 p = GulosoD.run(k, D.numeroExemplosPositivo, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 3);
                                 break;
                             case Const.ALGORITMO_SSDPHp20aD1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp60aD1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp20b50D1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHp60b50D1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHpn5D1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5,tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                             case Const.ALGORITMO_SSDPHpn10D1:
-                                p = SSDPHe.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
+                                p = eSSDPH.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos, 1);
                                 break;
                         }
 
@@ -295,7 +296,8 @@ public class SimulacaoGeral {
 
             //Const.ALGORITMO_ED1,
             //Const.ALGORITMO_SSDPmais,
-            Const.ALGORITMO_SSDPHeD4,
+            //Const.ALGORITMO_SSDPHeD4,
+            //Const.ALGORITMO_SSDPHsd,
             /*Const.ALGORITMO_SSDPHp20aD1,
             Const.ALGORITMO_SSDPHp60aD1,
             Const.ALGORITMO_SSDPHp20b50D1,

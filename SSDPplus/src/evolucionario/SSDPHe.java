@@ -184,7 +184,7 @@ public class SSDPHe {
                 Pattern[] similaresPk = Pk[c].getSimilares();
                 if(similaresPk != null){
                     for(int m = 0; m < similaresPk.length; m++){
-                        if(similaresPk[m].getItens().size() >=maxDimensao){
+                        if(similaresPk[m].getItens().size() > maxDimensao){
                             PkBigger[i++] = similaresPk[m];
                         }
 
