@@ -1,0 +1,6 @@
+/SSDPplus/dist/
+/SSDPH/nbproject/private/
+/SSDPH/build/
+/SSDPH/dist/
+/datasets/*
+!/datasets/.gitkeep
