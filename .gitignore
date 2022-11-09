@@ -3,4 +3,4 @@
 /SSDPH/build/
 /SSDPH/dist/
 /datasets/*
-!.gitkeep
+!/datasets/.gitkeep
