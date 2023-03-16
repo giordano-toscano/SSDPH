@@ -28,6 +28,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Scanner;
+import sd.SD;
 //import sd.SD;
 
 /**
@@ -199,6 +200,9 @@ public class SimulacaoGeral {
                         Const.random = new Random(Const.SEEDS[n]);
                         long t0 = System.currentTimeMillis();
                         switch (algoritmo) {
+                            case Const.ALGORITMO_SD:
+                                p = SD.run(0, k, tipoAvaliacao, k, tempoMaximoSegundosAlgoritmos);
+                                break;
                             case Const.ALGORITMO_SSDPmais:
                                 p = SSDPplus.run(k, tipoAvaliacao, 0.5, tempoMaximoSegundosAlgoritmos);
                                 break;
@@ -297,7 +301,8 @@ public class SimulacaoGeral {
 
             //Const.ALGORITMO_ED1,
             //Const.ALGORITMO_SSDPmais,
-            Const.ALGORITMO_SSDPHeD4,
+            Const.ALGORITMO_SD,
+            //Const.ALGORITMO_SSDPHeD4,
             //Const.ALGORITMO_SSDPHsd,
             /*Const.ALGORITMO_SSDPHp20aD1,
             Const.ALGORITMO_SSDPHp60aD1,
@@ -312,8 +317,8 @@ public class SimulacaoGeral {
         };
 
         SimulacaoGeral sg = new SimulacaoGeral(new File(Const.CAMINHO_INDICE));
-        //String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_WRACC_NORMALIZED;
-        String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_QG;
+        String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_WRACC_NORMALIZED;
+        //String tipoAvaliacao = Avaliador.METRICA_AVALIACAO_QG;
 
         sg.run(K, numeroRepeticoes, algoritmos, ",", tipoAvaliacao, tempoMaximoSegundosAlgoritmos);
     }

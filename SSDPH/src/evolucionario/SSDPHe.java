@@ -29,7 +29,7 @@ public class SSDPHe {
         long t0 = System.currentTimeMillis(); //Initial time
         int j = 0;
         int kOriginal = k;
-        k = 20;
+        k = 30;
         Pattern[][] pList = new Pattern[D.numberOfPartitions][];
         //Pattern[][] pCacheList = new Pattern[D.numberOfPartitions*k*Pattern.maxSimulares][];
         Pattern[] pBest;
@@ -175,16 +175,16 @@ public class SSDPHe {
                     maiorNumeroItens = Pk[c].getItens().size();
                 }
             }*/
-            Pattern[] PkBigger = new Pattern[k*Pattern.maxSimulares]; //new Pattern[kOriginal*Pattern.maxSimulares];
+            Pattern[] PkBigger = new Pattern[k*Pattern.maxSimulares + k]; //new Pattern[kOriginal*Pattern.maxSimulares];
             int i = 0;
             for(int c = 0; c < Pk.length; c++){
-                if(Pk[c].getItens().size() > maxDimensao){
+                if(Pk[c].getItens().size() > 2){
                     PkBigger[i++] = Pk[c];
                 }
                 Pattern[] similaresPk = Pk[c].getSimilares();
                 if(similaresPk != null){
                     for(int m = 0; m < similaresPk.length; m++){
-                        if(similaresPk[m].getItens().size() > maxDimensao){
+                        if(similaresPk[m].getItens().size() > 2){
                             PkBigger[i++] = similaresPk[m];
                         }
 

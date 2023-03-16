@@ -13,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import sd.SD;
+import sd.SDssdph;
 //import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
@@ -29,7 +29,7 @@ public class SSDPHsd {
         long t0 = System.currentTimeMillis(); //Initial time
         int j = 0;
         int kOriginal = k;
-        k = 30;
+        k = 10;
         Pattern[][] pList = new Pattern[D.numberOfPartitions][];
         //Pattern[][] pCacheList = new Pattern[D.numberOfPartitions*k*Pattern.maxSimulares][];
         Pattern[] pBest;
@@ -193,18 +193,18 @@ public class SSDPHsd {
                 }
             }
             */
-            int[] itensUtilizadosOriginal = D.itensUtilizados;
+            /*int[] itensUtilizadosOriginal = D.itensUtilizados;
             int numeroItensUtilizadosOriginal = D.numeroItensUtilizados;
             D.itensUtilizados = itensPkArray;
-            D.numeroItensUtilizados = itensPkArray.length;
+            D.numeroItensUtilizados = itensPkArray.length;*/
             
-            Pattern[] PkExhaustive = SD.run(0, kOriginal, tipoAvaliacao, kOriginal, maxTimeSegundos, Pk);
+            Pattern[] PkSD = SDssdph.run(0, kOriginal, tipoAvaliacao, kOriginal, maxTimeSegundos, Pk);
             //SELECAO.salvandoRelevantesDPmais(PkExhaustive, PkBigger, similaridade);
             
-            D.itensUtilizados = itensUtilizadosOriginal;
+           /* D.itensUtilizados = itensUtilizadosOriginal;
             D.numeroItensUtilizados = numeroItensUtilizadosOriginal;
-            
-            Pk = PkExhaustive;
+            */
+            Pk = PkSD;
             return Pk;
         }
     }

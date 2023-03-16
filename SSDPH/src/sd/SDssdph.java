@@ -10,8 +10,6 @@ import dp.Const;
 import dp.D;
 import dp.Pattern;
 import dp.RSS;
-import evolucionario.SSDPplus;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -22,14 +20,14 @@ import simulacoes.DPinfo;
  *
  * @author Marianna
  */
-public class SD {
-    public static Pattern[] run(double min_support, int beam_width, String tipoAvaliacao, int k, double maxTimeSegundos){
+public class SDssdph {
+    public static Pattern[] run(double min_support, int beam_width, String tipoAvaliacao, int k, double maxTimeSegundos, Pattern[] PkSSDP){
         long t0 = System.currentTimeMillis(); //Initial time
-        Pattern[] beam = new Pattern[beam_width];
-        Pattern[] newBeam = new Pattern[beam_width];
+        Pattern[] beam = PkSSDP.clone();
+        Pattern[] newBeam = PkSSDP.clone();
         Pattern[] Pk = new Pattern[k];
         for(int i = 0; i < beam_width; i++){
-            beam[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
+            //beam[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
             newBeam[i] = new Pattern(new HashSet<Integer>(), tipoAvaliacao);
         }
         
@@ -161,8 +159,8 @@ public class SD {
         int beamWidth = 2*k; //Número de soluções capturadas por ciclo
         double maxTimeSecond =  60*60; //1 hora
         
-        SD sd = new SD();
-        Pattern[] p = sd.run(min_support, beamWidth, tipoAvaliacao, 2*k, maxTimeSecond);
+        SDssdph sd = new SDssdph();
+        Pattern[] p = sd.run(min_support, beamWidth, tipoAvaliacao, 2*k, maxTimeSecond, new Pattern [beamWidth]);
         p = RSS.run(p, k);
         double tempo = (System.currentTimeMillis() - t0)/1000.0; //time
         System.out.println("Finalizado");
